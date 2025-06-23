@@ -382,29 +382,29 @@ services:
     ports:
       - "8001:8001"
     environment:
-      - MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/auth-db
-      - JWT_SECRET=your_jwt_secret
+      - MONGODB_URI=mongodb+srv://abhiarsikere0001:0vShVcim2heUsEqn@projectdb.qntj6va.mongodb.net/?retryWrites=true&w=majority&appName=projectDB
+      - JWT_SECRET=Abhishek_EventFlow_Project_secret_key_1234567890
 
   event-service:
     build: ./backend/event-service
     ports:
       - "8002:8002"
     environment:
-      - MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/event-db
+      - MONGODB_URI=mongodb+srv://abhiarsikere0001:0vShVcim2heUsEqn@projectdb.qntj6va.mongodb.net/?retryWrites=true&w=majority&appName=projectDB
 
   notification-service:
     build: ./backend/notification-service
     ports:
       - "8003:8003"
     environment:
-      - MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/notification-db
+      - MONGODB_URI=mongodb+srv://abhiarsikere0001:0vShVcim2heUsEqn@projectdb.qntj6va.mongodb.net/?retryWrites=true&w=majority&appName=projectDB
 
   leaderboard-service:
     build: ./backend/leaderboard-service
     ports:
       - "8004:8004"
     environment:
-      - MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/leaderboard-db
+      - MONGODB_URI=mongodb+srv://abhiarsikere0001:0vShVcim2heUsEqn@projectdb.qntj6va.mongodb.net/?retryWrites=true&w=majority&appName=projectDB
 ```
 
 ### 7.2 Create Dockerfiles for Each Service

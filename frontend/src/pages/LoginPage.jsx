@@ -6,7 +6,7 @@ const LoginPage = () => {
 
   const handleLoginSuccess = () => {
     // Redirect to dashboard or home page after successful login
-    navigate('/dashboard');
+    navigate('/home');
   };
 
   return (
