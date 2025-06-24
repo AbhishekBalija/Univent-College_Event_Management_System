@@ -17,7 +17,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
       >
         <div className="p-4 border-b border-blue-600">
           <div className="flex items-center justify-between">
-            <span className="text-xl font-bold">EventFlow+</span>
+            <span className="text-xl font-bold">Univent</span>
             <button 
               className="text-white md:hidden focus:outline-none" 
               onClick={toggleSidebar}

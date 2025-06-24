@@ -5,7 +5,7 @@ const Header = () => {
     <header className="bg-blue-600 text-white shadow-md">
       <div className="container mx-auto px-4 py-3 flex justify-between items-center">
         <div className="flex items-center">
-          <Link to="/" className="text-2xl font-bold">EventFlow+</Link>
+          <Link to="/" className="text-2xl font-bold">Univent</Link>
         </div>
         
         <nav className="hidden md:block">

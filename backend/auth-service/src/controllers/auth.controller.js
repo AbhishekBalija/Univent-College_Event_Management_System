@@ -1,5 +1,7 @@
 const User = require('../models/User');
 const { generateToken, generateRefreshToken, verifyRefreshToken } = require('../utils/jwt.utils');
+const { sendPasswordResetEmail } = require('../utils/email.utils');
+const crypto = require('crypto');
 
 /**
  * @desc    Register a new user
@@ -197,6 +199,136 @@ exports.logout = async (req, res, next) => {
     res.status(200).json({
       success: true,
       message: 'Logged out successfully'
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * @desc    Forgot password - send reset email
+ * @route   POST /api/auth/forgot-password
+ * @access  Public
+ */
+exports.forgotPassword = async (req, res, next) => {
+  try {
+    const { email } = req.body;
+
+    if (!email) {
+      return res.status(400).json({
+        success: false,
+        message: 'Please provide your email address'
+      });
+    }
+
+    // Find user by email
+    const user = await User.findOne({ email });
+    if (!user) {
+      // For security reasons, don't reveal that the user doesn't exist
+      return res.status(200).json({
+        success: true,
+        message: 'If your email is registered, you will receive a password reset link'
+      });
+    }
+
+    // Generate reset token
+    const resetToken = user.generateResetToken();
+    await user.save({ validateBeforeSave: false });
+
+    // Create reset URL
+    // In production, this would be your frontend URL
+    const resetUrl = `${req.protocol}://${req.get('host')}/reset-password/${resetToken}`;
+    
+    // For development, we'll also include a frontend URL for testing
+    const frontendResetUrl = `http://localhost:5173/reset-password/${resetToken}`;
+
+    try {
+      // Send email with reset link
+      await sendPasswordResetEmail({
+        email: user.email,
+        subject: 'Univent Password Reset',
+        message: `You requested a password reset. Please click the button below to reset your password. If you didn't request this, please ignore this email.`,
+        resetUrl: frontendResetUrl // Use frontend URL for reset link
+      });
+
+      res.status(200).json({
+        success: true,
+        message: 'Password reset email sent'
+      });
+    } catch (error) {
+      // If email sending fails, clear the reset token
+      user.resetPasswordToken = undefined;
+      user.resetPasswordExpire = undefined;
+      await user.save({ validateBeforeSave: false });
+
+      return res.status(500).json({
+        success: false,
+        message: 'Failed to send password reset email'
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * @desc    Reset password using token
+ * @route   POST /api/auth/reset-password/:token
+ * @access  Public
+ */
+exports.resetPassword = async (req, res, next) => {
+  try {
+    const { token } = req.params;
+    const { password } = req.body;
+
+    if (!password) {
+      return res.status(400).json({
+        success: false,
+        message: 'Please provide a new password'
+      });
+    }
+
+    if (password.length < 8) {
+      return res.status(400).json({
+        success: false,
+        message: 'Password must be at least 8 characters long'
+      });
+    }
+
+    // Hash the token to compare with stored hash
+    const hashedToken = crypto
+      .createHash('sha256')
+      .update(token)
+      .digest('hex');
+
+    // Find user with matching token and valid expiry
+    const user = await User.findOne({
+      resetPasswordToken: hashedToken,
+      resetPasswordExpire: { $gt: Date.now() }
+    });
+
+    if (!user) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid or expired password reset token'
+      });
+    }
+
+    // Set new password and clear reset token fields
+    user.password = password;
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpire = undefined;
+    await user.save();
+
+    // Generate new tokens for automatic login
+    const newToken = generateToken(user);
+    const refreshToken = generateRefreshToken(user);
+
+    res.status(200).json({
+      success: true,
+      message: 'Password reset successful',
+      token: newToken,
+      refreshToken
     });
   } catch (error) {
     next(error);

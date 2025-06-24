@@ -67,6 +67,32 @@ const authService = {
     }
   },
 
+  // Request password reset email
+  forgotPassword: async (email) => {
+    try {
+      const response = await authApi.post('/forgot-password', { email });
+      return response.data;
+    } catch (error) {
+      throw new Error(error.response?.data?.message || 'Failed to send password reset email');
+    }
+  },
+
+  // Reset password with token
+  resetPassword: async (token, password) => {
+    try {
+      const response = await authApi.post(`/reset-password/${token}`, { password });
+      
+      // If reset is successful and returns tokens, store them
+      if (response.data.token) {
+        localStorage.setItem('token', response.data.token);
+      }
+      
+      return response.data;
+    } catch (error) {
+      throw new Error(error.response?.data?.message || 'Failed to reset password');
+    }
+  },
+
   // Check if user is authenticated
   isAuthenticated: () => {
     return !!localStorage.getItem('token');

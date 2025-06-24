@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import { Link } from 'react-router-dom';
 import { useAuth } from '../../context';
 
 const LoginForm = ({ onSuccess }) => {
@@ -108,9 +109,9 @@ const LoginForm = ({ onSuccess }) => {
           </div>
           
           <div className="text-sm">
-            <a href="#" className="text-blue-600 hover:text-blue-800">
+            <Link to="/forgot-password" className="text-blue-600 hover:text-blue-800">
               Forgot password?
-            </a>
+            </Link>
           </div>
         </div>
         

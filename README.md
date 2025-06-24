@@ -1,8 +1,8 @@
-# 🎉 EventFlow+ - Real-Time College Event Management System
+# 🎉 Univent - Real-Time College Event Management System
 
 ## 🚀 Project Overview
 
-**EventFlow+** is a dynamic, real-time event management platform tailored for college environments. It handles:
+**Univent** is a dynamic, real-time event management platform tailored for college environments. It handles:
 
 - 🎫 Event registration & tracking  
 - 📢 Live announcements  
@@ -15,7 +15,7 @@ Built using the **MERN stack** + **Socket.IO** for real-time communication.
 
 ## 🏗️ Architecture
 
-EventFlow+ follows a **Microservice Architecture** to ensure scalability, maintainability, and separation of concerns.
+Univent follows a **Microservice Architecture** to ensure scalability, maintainability, and separation of concerns.
 
 ### 🔄 Microservice Components
 
