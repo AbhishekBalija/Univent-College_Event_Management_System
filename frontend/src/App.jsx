@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Layout } from './components/layout';
-import { LoginPage, RegisterPage, ForgotPasswordPage, ResetPasswordPage } from './pages';
+import { LoginPage, RegisterPage, ForgotPasswordPage, ResetPasswordPage, HomePage } from './pages';
 import { ProtectedRoute } from './components/auth';
 
 function App() {
@@ -19,7 +19,7 @@ function App() {
         {/* Protected routes with layout */}
         <Route element={<ProtectedRoute />}>
           <Route path="/home" element={<Layout />}>
-            <Route index element={<h1 className="text-4xl font-bold mb-6">Welcome to Univent</h1>} />
+            <Route index element={<HomePage />} />
             <Route path="dashboard" element={<h1 className="text-4xl font-bold mb-6">Dashboard</h1>} />
             {/* Add more routes here as you develop the application */}
           </Route>
