@@ -1,9 +1,10 @@
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context';
 import { authService } from '../../services';
 
 const ProtectedRoute = () => {
   const { user, loading } = useAuth();
+  const location = useLocation();
   // Check if user is authenticated using authService
   const isAuthenticated = authService.isAuthenticated() && !!user;
 
@@ -19,6 +20,26 @@ const ProtectedRoute = () => {
   // Redirect to login if not authenticated
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
+  }
+
+  // Role-based routing
+  if (user) {
+    // If user is admin and trying to access non-admin routes
+    if (user.role === 'admin' && !location.pathname.includes('/admindashboard')) {
+      return <Navigate to="/admindashboard" replace />;
+    }
+    
+    // If user is organizer and trying to access non-organizer routes
+    if (user.role === 'organizer' && !location.pathname.includes('/organizerdashboard')) {
+      return <Navigate to="/organizerdashboard" replace />;
+    }
+    
+    // If user is participant and trying to access admin or organizer routes
+    if (user.role === 'participant' && 
+        (location.pathname.includes('/admindashboard') || 
+         location.pathname.includes('/organizerdashboard'))) {
+      return <Navigate to="/home" replace />;
+    }
   }
 
   // Render the protected content

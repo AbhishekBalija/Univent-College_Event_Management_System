@@ -1,6 +1,14 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Layout } from './components/layout';
-import { LoginPage, RegisterPage, ForgotPasswordPage, ResetPasswordPage, HomePage } from './pages';
+import { 
+  LoginPage, 
+  RegisterPage, 
+  ForgotPasswordPage, 
+  ResetPasswordPage, 
+  HomePage,
+  AdminDashboardPage,
+  OrganizerDashboardPage 
+} from './pages';
 import { ProtectedRoute } from './components/auth';
 
 function App() {
@@ -22,6 +30,16 @@ function App() {
             <Route index element={<HomePage />} />
             <Route path="dashboard" element={<h1 className="text-4xl font-bold mb-6">Dashboard</h1>} />
             {/* Add more routes here as you develop the application */}
+          </Route>
+          
+          {/* Admin Dashboard */}
+          <Route path="/admindashboard" element={<Layout />}>
+            <Route index element={<AdminDashboardPage />} />
+          </Route>
+          
+          {/* Organizer Dashboard */}
+          <Route path="/organizerdashboard" element={<Layout />}>
+            <Route index element={<OrganizerDashboardPage />} />
           </Route>
         </Route>
       </Routes>

@@ -51,7 +51,7 @@ const RegisterForm = ({ onSuccess }) => {
       
       try {
         // Remove confirmPassword and acceptTerms from the data sent to the API
-        const { confirmPassword, acceptTerms, ...registrationData } = values;
+        const { confirmPassword: _confirmPassword, acceptTerms: _acceptTerms, ...registrationData } = values;
         
         // Call the register function from AuthContext
         await register(registrationData);

@@ -11,7 +11,7 @@ const Header = ({ toggleSidebar }) => {
   };
   
   return (
-    <header className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white">
+    <header className="bg-gradient-to-r from-indigo-700 to-blue-600 text-white">
       <div className="container mx-auto px-4 py-3">
         <div className="flex justify-between items-center">
           <div className="flex items-center">
