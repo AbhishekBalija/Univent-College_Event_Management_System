@@ -109,7 +109,7 @@ const LoginForm = ({ onSuccess }) => {
           </div>
           
           <div className="text-sm">
-            <Link to="/forgot-password" className="text-blue-600 hover:text-blue-800">
+            <Link to="/forgot-password" className="text-blue-500 hover:text-blue-800">
               Forgot password?
             </Link>
           </div>
@@ -135,7 +135,7 @@ const LoginForm = ({ onSuccess }) => {
       <div className="mt-6 text-center">
         <p className="text-sm text-gray-600">
           Don't have an account?{' '}
-          <a href="/register" className="text-blue-600 hover:text-blue-800 font-medium">
+          <a href="/register" className="text-blue-300 hover:text-blue-800 font-medium">
             Register here
           </a>
         </p>
