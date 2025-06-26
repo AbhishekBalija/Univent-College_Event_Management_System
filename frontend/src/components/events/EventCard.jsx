@@ -13,22 +13,26 @@ const EventCard = ({ event }) => {
   const getStatusBadge = () => {
     const eventDate = new Date(event.date);
     const today = new Date();
+    today.setHours(0, 0, 0, 0); // Reset time to start of day
+    
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
     
     if (eventDate < today) {
       return (
         <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-          Past
+          Completed
         </span>
       );
-    } else if (eventDate.toDateString() === today.toDateString()) {
+    } else if (eventDate >= today && eventDate < tomorrow) {
       return (
-        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
-          Today
+        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+          Active
         </span>
       );
     } else {
       return (
-        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
           Upcoming
         </span>
       );

@@ -1,10 +1,14 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context';
+import { eventService } from '../services';
 
 const OrganizerDashboardPage = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const [events, setEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   // Redirect if user is not an organizer
   useEffect(() => {
@@ -12,6 +16,34 @@ const OrganizerDashboardPage = () => {
       navigate('/home');
     }
   }, [user, navigate]);
+  
+  // Fetch organizer's events
+  useEffect(() => {
+    const fetchEvents = async () => {
+      if (!user) return;
+      
+      try {
+        setLoading(true);
+        // Get all events and filter by the current organizer
+        const allEvents = await eventService.getAllEvents();
+        const organizerEvents = allEvents.data.filter(event => 
+          event.createdBy === user.id
+        );
+        
+        // Sort events by date (upcoming first)
+        organizerEvents.sort((a, b) => new Date(a.date) - new Date(b.date));
+        
+        setEvents(organizerEvents);
+      } catch (err) {
+        console.error('Failed to fetch events:', err);
+        setError('Failed to load events. Please try again later.');
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    fetchEvents();
+  }, [user]);
 
   return (
     <div className="pb-12">
@@ -69,64 +101,94 @@ const OrganizerDashboardPage = () => {
           {/* Upcoming Events Section */}
           <div className="mt-8">
             <h2 className="text-2xl font-bold text-gray-800 mb-6">Your Upcoming Events</h2>
-            <div className="overflow-hidden bg-white shadow sm:rounded-md">
-              <ul className="divide-y divide-gray-200">
-                <li>
-                  <div className="px-4 py-4 sm:px-6">
-                    <div className="flex items-center justify-between">
-                      <p className="truncate text-sm font-medium text-indigo-600">Hackathon 2023</p>
-                      <div className="ml-2 flex flex-shrink-0">
-                        <p className="inline-flex rounded-full bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800">Active</p>
-                      </div>
-                    </div>
-                    <div className="mt-2 sm:flex sm:justify-between">
-                      <div className="sm:flex">
-                        <p className="flex items-center text-sm text-gray-500">
-                          <svg className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                          </svg>
-                          Main Campus
-                        </p>
-                      </div>
-                      <div className="mt-2 flex items-center text-sm text-gray-500 sm:mt-0">
-                        <svg className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                        </svg>
-                        <p>December 15, 2023</p>
-                      </div>
-                    </div>
-                  </div>
-                </li>
-                <li>
-                  <div className="px-4 py-4 sm:px-6">
-                    <div className="flex items-center justify-between">
-                      <p className="truncate text-sm font-medium text-indigo-600">Tech Talk: AI Revolution</p>
-                      <div className="ml-2 flex flex-shrink-0">
-                        <p className="inline-flex rounded-full bg-yellow-100 px-2 text-xs font-semibold leading-5 text-yellow-800">Upcoming</p>
-                      </div>
-                    </div>
-                    <div className="mt-2 sm:flex sm:justify-between">
-                      <div className="sm:flex">
-                        <p className="flex items-center text-sm text-gray-500">
-                          <svg className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                          </svg>
-                          Science Building
-                        </p>
-                      </div>
-                      <div className="mt-2 flex items-center text-sm text-gray-500 sm:mt-0">
-                        <svg className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                        </svg>
-                        <p>December 20, 2023</p>
-                      </div>
-                    </div>
-                  </div>
-                </li>
-              </ul>
-            </div>
+            {loading ? (
+              <div className="flex justify-center py-8">
+                <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-green-600"></div>
+              </div>
+            ) : error ? (
+              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
+                {error}
+              </div>
+            ) : events.length === 0 ? (
+              <div className="bg-white shadow sm:rounded-md p-6 text-center">
+                <p className="text-gray-500">You haven't created any events yet.</p>
+                <Link to="/events/create" className="mt-4 inline-block text-indigo-600 hover:text-indigo-800">
+                  Create your first event
+                </Link>
+              </div>
+            ) : (
+              <div className="overflow-hidden bg-white shadow sm:rounded-md">
+                <ul className="divide-y divide-gray-200">
+                  {events.map(event => {
+                    // Determine event status
+                    const eventDate = new Date(event.date);
+                    const today = new Date();
+                    today.setHours(0, 0, 0, 0); // Reset time to start of day
+                    
+                    const tomorrow = new Date(today);
+                    tomorrow.setDate(tomorrow.getDate() + 1);
+                    
+                    let status = '';
+                    let statusClass = '';
+                    
+                    if (eventDate < today) {
+                      status = 'Completed';
+                      statusClass = 'bg-gray-100 text-gray-800';
+                    } else if (eventDate >= today && eventDate < tomorrow) {
+                      status = 'Active';
+                      statusClass = 'bg-green-100 text-green-800';
+                    } else {
+                      status = 'Upcoming';
+                      statusClass = 'bg-yellow-100 text-yellow-800';
+                    }
+                    
+                    // Format date
+                    const formattedDate = new Date(event.date).toLocaleDateString(undefined, {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric'
+                    });
+                    
+                    return (
+                      <li key={event._id}>
+                        <div className="px-4 py-4 sm:px-6">
+                          <div className="flex items-center justify-between">
+                            <p className="truncate text-sm font-medium text-indigo-600">{event.title}</p>
+                            <div className="ml-2 flex flex-shrink-0">
+                              <p className={`inline-flex rounded-full px-2 text-xs font-semibold leading-5 ${statusClass}`}>
+                                {status}
+                              </p>
+                            </div>
+                          </div>
+                          <div className="mt-2 sm:flex sm:justify-between">
+                            <div className="sm:flex">
+                              <p className="flex items-center text-sm text-gray-500">
+                                <svg className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                </svg>
+                                {event.location}
+                              </p>
+                            </div>
+                            <div className="mt-2 flex items-center text-sm text-gray-500 sm:mt-0">
+                              <svg className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                              </svg>
+                              <p>{formattedDate}</p>
+                            </div>
+                          </div>
+                          <div className="mt-2">
+                            <Link to={`/events/${event._id}`} className="text-sm font-medium text-indigo-600 hover:text-indigo-500">
+                              View details
+                            </Link>
+                          </div>
+                        </div>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+            )}
           </div>
 
           {/* Event Statistics */}
@@ -135,23 +197,43 @@ const OrganizerDashboardPage = () => {
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
               <div className="bg-white p-4 rounded-lg shadow text-center">
                 <h3 className="text-gray-500 text-sm font-medium">Total Events</h3>
-                <p className="text-3xl font-bold text-blue-600">12</p>
-                <p className="text-green-500 text-sm">↑ 2 new this month</p>
+                <p className="text-3xl font-bold text-blue-600">{events.length}</p>
+                <p className="text-green-500 text-sm">{events.length > 0 ? `${events.length} events created` : 'No events yet'}</p>
               </div>
               <div className="bg-white p-4 rounded-lg shadow text-center">
                 <h3 className="text-gray-500 text-sm font-medium">Registrations</h3>
-                <p className="text-3xl font-bold text-green-600">342</p>
-                <p className="text-green-500 text-sm">↑ 18% from last event</p>
+                <p className="text-3xl font-bold text-green-600">
+                  {events.reduce((total, event) => total + (event.participants ? event.participants.length : 0), 0)}
+                </p>
+                <p className="text-green-500 text-sm">Total registrations</p>
               </div>
               <div className="bg-white p-4 rounded-lg shadow text-center">
-                <h3 className="text-gray-500 text-sm font-medium">Attendance Rate</h3>
-                <p className="text-3xl font-bold text-purple-600">87%</p>
-                <p className="text-green-500 text-sm">↑ 5% improvement</p>
+                <h3 className="text-gray-500 text-sm font-medium">Active Events</h3>
+                <p className="text-3xl font-bold text-purple-600">
+                  {events.filter(event => {
+                    const eventDate = new Date(event.date);
+                    const today = new Date();
+                    today.setHours(0, 0, 0, 0);
+                    const tomorrow = new Date(today);
+                    tomorrow.setDate(tomorrow.getDate() + 1);
+                    return eventDate >= today && eventDate < tomorrow;
+                  }).length}
+                </p>
+                <p className="text-green-500 text-sm">Events happening today</p>
               </div>
               <div className="bg-white p-4 rounded-lg shadow text-center">
-                <h3 className="text-gray-500 text-sm font-medium">Feedback Score</h3>
-                <p className="text-3xl font-bold text-teal-600">4.8/5</p>
-                <p className="text-gray-500 text-sm">Based on 156 reviews</p>
+                <h3 className="text-gray-500 text-sm font-medium">Upcoming Events</h3>
+                <p className="text-3xl font-bold text-teal-600">
+                  {events.filter(event => {
+                    const eventDate = new Date(event.date);
+                    const today = new Date();
+                    today.setHours(0, 0, 0, 0);
+                    const tomorrow = new Date(today);
+                    tomorrow.setDate(tomorrow.getDate() + 1);
+                    return eventDate >= tomorrow;
+                  }).length}
+                </p>
+                <p className="text-gray-500 text-sm">Future events</p>
               </div>
             </div>
           </div>
