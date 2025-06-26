@@ -48,14 +48,14 @@ const Header = ({ toggleSidebar }) => {
         <div className="flex items-center space-x-4">
           {user ? (
             <div className="flex items-center space-x-4">
-              <div className="flex items-center gap-2">
+              <Link to="/profile" className="flex items-center gap-2 hover:bg-white/10 px-2 py-1 rounded-md transition duration-300">
                 <div className="h-8 w-8 rounded-full bg-blue-400 flex items-center justify-center font-semibold uppercase">
                   {user.firstName?.charAt(0) || "U"}
                 </div>
                 <span className="hidden md:inline font-medium">
                   {user.firstName || "User"}
                 </span>
-              </div>
+              </Link>
               <button
                 onClick={handleLogout}
                 className="bg-white/10 hover:bg-white/20 px-4 py-2 rounded-md transition duration-300 border border-white/20 flex items-center gap-2"

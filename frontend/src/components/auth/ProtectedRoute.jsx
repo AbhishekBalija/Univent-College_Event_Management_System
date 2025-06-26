@@ -24,22 +24,24 @@ const ProtectedRoute = () => {
 
   // Role-based routing
   if (user) {
-    // Allow all authenticated users to access event routes
-    if (location.pathname.includes('/events')) {
+    // Allow all authenticated users to access event routes and profile page
+    if (location.pathname.includes('/events') || location.pathname.includes('/profile')) {
       return <Outlet />;
     }
     
-    // If user is admin and trying to access non-admin routes (except events)
+    // If user is admin and trying to access non-admin routes (except events and profile)
     if (user.role === 'admin' && 
         !location.pathname.includes('/admindashboard') && 
-        !location.pathname.includes('/events')) {
+        !location.pathname.includes('/events') && 
+        !location.pathname.includes('/profile')) {
       return <Navigate to="/admindashboard" replace />;
     }
     
-    // If user is organizer and trying to access non-organizer routes (except events)
+    // If user is organizer and trying to access non-organizer routes (except events and profile)
     if (user.role === 'organizer' && 
         !location.pathname.includes('/organizerdashboard') && 
-        !location.pathname.includes('/events')) {
+        !location.pathname.includes('/events') && 
+        !location.pathname.includes('/profile')) {
       return <Navigate to="/organizerdashboard" replace />;
     }
     

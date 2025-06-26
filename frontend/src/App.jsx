@@ -11,7 +11,8 @@ import {
   EventsPage,
   EventDetailPage,
   CreateEventPage,
-  EditEventPage
+  EditEventPage,
+  ProfilePage
 } from './pages';
 import { ProtectedRoute } from './components/auth';
 
@@ -52,6 +53,11 @@ function App() {
             <Route path=":eventId" element={<EventDetailPage />} />
             <Route path="create" element={<CreateEventPage />} />
             <Route path=":eventId/edit" element={<EditEventPage />} />
+          </Route>
+          
+          {/* Profile Route */}
+          <Route path="/profile" element={<Layout />}>
+            <Route index element={<ProfilePage />} />
           </Route>
         </Route>
       </Routes>

@@ -34,6 +34,16 @@ const authService = {
       throw new Error(error.response?.data?.message || 'Registration failed');
     }
   },
+  
+  // Update user profile
+  updateProfile: async (profileData) => {
+    try {
+      const response = await authApi.put('/profile', profileData);
+      return response.data;
+    } catch (error) {
+      throw new Error(error.response?.data?.message || 'Profile update failed');
+    }
+  },
 
   // Login user
   login: async (email, password) => {

@@ -5,6 +5,7 @@ export { default as ResetPasswordPage } from './ResetPasswordPage';
 export { default as HomePage } from './HomePage';
 export { default as AdminDashboardPage } from './AdminDashboardPage';
 export { default as OrganizerDashboardPage } from './OrganizerDashboardPage';
+export { default as ProfilePage } from './ProfilePage';
 
 // Event Pages
 export { default as EventsPage } from './EventsPage';
