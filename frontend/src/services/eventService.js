@@ -43,12 +43,9 @@ const eventService = {
     }
 
     try {
-      console.log('Making API call for eventId:', eventId); // Debug log
       const response = await eventApi.get(`/${eventId}`);
-      console.log('API response:', response.data); // Debug log
       return response.data.data; // Extract the data from the nested structure
     } catch (error) {
-      console.error('API Error:', error.response?.data || error.message);
       throw new Error(error.response?.data?.message || 'Failed to fetch event details');
     }
   },
@@ -57,10 +54,8 @@ const eventService = {
   createEvent: async (eventData) => {
     try {
       const response = await eventApi.post('/', eventData);
-      console.log('Create event API response:', response.data); // Debug log
       return response.data.data || response.data; // Extract the data from the nested structure if it exists
     } catch (error) {
-      console.error('Create event API Error:', error.response?.data || error.message);
       throw new Error(error.response?.data?.message || 'Failed to create event');
     }
   },
@@ -100,12 +95,9 @@ const eventService = {
     }
 
     try {
-      console.log('Registering for event:', eventId, 'with data:', registrationData); // Debug log
       const response = await eventApi.post(`/${eventId}/register`, registrationData);
-      console.log('Registration response:', response.data); // Debug log
       return response.data.data;
     } catch (error) {
-      console.error('Registration error:', error.response?.data || error); // Debug log
       throw new Error(error.response?.data?.message || 'Failed to register for event');
     }
   },
@@ -132,7 +124,6 @@ const eventService = {
 
     try {
       const response = await eventApi.get(`/${eventId}/participants`);
-      console.log('Participants API response:', response.data); // Debug log
       return response.data.data || []; // Extract the data from the nested structure
     } catch (error) {
       throw new Error(error.response?.data?.message || 'Failed to fetch participants');

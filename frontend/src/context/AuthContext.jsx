@@ -14,8 +14,8 @@ export const AuthProvider = ({ children }) => {
     if (storedUser) {
       try {
         setUser(JSON.parse(storedUser));
-      } catch (err) {
-        console.error('Failed to parse stored user data:', err);
+      // eslint-disable-next-line no-unused-vars
+      } catch (_) {
         localStorage.removeItem('user');
       }
     }

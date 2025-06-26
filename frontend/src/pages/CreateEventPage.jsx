@@ -35,11 +35,6 @@ const CreateEventPage = () => {
     setError(null);
 
     try {
-      // Log user information for debugging
-      console.log('Current user:', user);
-      console.log('User role:', user.role);
-      console.log('Can create event:', canCreateEvent);
-      
       // Combine date and time fields
       const combinedData = {
         ...eventData,
@@ -52,30 +47,17 @@ const CreateEventPage = () => {
       // Add creator information
       combinedData.createdBy = user._id || user.id;
       combinedData.organizerName = user.name || `${user.firstName} ${user.lastName}`;
-
-      // Log the token from localStorage for debugging
-      const token = localStorage.getItem('token');
-      console.log('Token exists:', !!token);
-      if (token) {
-        // Log the first few characters of the token (don't log the entire token for security)
-        console.log('Token preview:', token.substring(0, 20) + '...');
-      }
       
       const createdEvent = await eventService.createEvent(combinedData);
-      console.log('Created event response:', createdEvent); // Debug log to see response structure
       
       // Extract the event ID from the response, handling different response structures
       const eventId = createdEvent.data?._id || createdEvent._id;
       
       if (!eventId) {
-        console.error('No event ID in response:', createdEvent);
         throw new Error('Failed to get event ID from server response');
       }
-      
-      console.log('Navigating to event with ID:', eventId);
       navigate(`/events/${eventId}`);
     } catch (err) {
-      console.error('Failed to create event:', err);
       setError(err.message || 'Failed to create event. Please try again.');
     } finally {
       setLoading(false);

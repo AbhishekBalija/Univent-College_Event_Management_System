@@ -2,7 +2,8 @@
  * Error handling middleware
  */
 const errorHandler = (err, req, res, next) => {
-  console.error(err.stack);
+  // Log error for server-side debugging only
+  console.error('Error:', err.message);
 
   // Mongoose validation error
   if (err.name === 'ValidationError') {
@@ -33,8 +34,7 @@ const errorHandler = (err, req, res, next) => {
   // Default error response
   res.status(err.statusCode || 500).json({
     success: false,
-    message: err.message || 'Server Error',
-    error: process.env.NODE_ENV === 'development' ? err.stack : undefined
+    message: err.message || 'Server Error'
   });
 };
 
