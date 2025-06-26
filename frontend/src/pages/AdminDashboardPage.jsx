@@ -1,10 +1,12 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context';
+import { UserManagement } from '../components/admin';
 
 const AdminDashboardPage = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const [activeSection, setActiveSection] = useState(null);
 
   // Redirect if user is not an admin
   useEffect(() => {
@@ -32,8 +34,11 @@ const AdminDashboardPage = () => {
                 </svg>
               </div>
               <p className="text-gray-600 mb-4">Manage users, roles, and permissions across the platform.</p>
-              <button className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md transition duration-300">
-                Manage Users
+              <button 
+                className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md transition duration-300"
+                onClick={() => setActiveSection(activeSection === 'users' ? null : 'users')}
+              >
+                {activeSection === 'users' ? 'Hide Users' : 'Manage Users'}
               </button>
             </div>
 
@@ -66,6 +71,13 @@ const AdminDashboardPage = () => {
               </button>
             </div>
           </div>
+
+          {/* User Management Section */}
+          {activeSection === 'users' && (
+            <div className="mt-8">
+              <UserManagement />
+            </div>
+          )}
 
           {/* Analytics Section */}
           <div className="mt-8">
