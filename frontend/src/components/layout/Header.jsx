@@ -36,7 +36,7 @@ const Header = ({ toggleSidebar }) => {
 
           <Link to="/home" className="flex items-center text-2xl font-bold">
             <img
-              src="/logo2.jpg"
+              src="/logo3.jpg"
               alt="Univent Logo"
               className="h-8 w-8 rounded-full mr-2"
             />
