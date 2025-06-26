@@ -7,7 +7,11 @@ import {
   ResetPasswordPage, 
   HomePage,
   AdminDashboardPage,
-  OrganizerDashboardPage 
+  OrganizerDashboardPage,
+  EventsPage,
+  EventDetailPage,
+  CreateEventPage,
+  EditEventPage
 } from './pages';
 import { ProtectedRoute } from './components/auth';
 
@@ -40,6 +44,14 @@ function App() {
           {/* Organizer Dashboard */}
           <Route path="/organizerdashboard" element={<Layout />}>
             <Route index element={<OrganizerDashboardPage />} />
+          </Route>
+          
+          {/* Event Routes */}
+          <Route path="/events/" element={<Layout />}>
+            <Route index element={<EventsPage />} />
+            <Route path=":eventId" element={<EventDetailPage />} />
+            <Route path="create" element={<CreateEventPage />} />
+            <Route path=":eventId/edit" element={<EditEventPage />} />
           </Route>
         </Route>
       </Routes>

@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context';
 
 const AdminDashboardPage = () => {
@@ -46,9 +46,9 @@ const AdminDashboardPage = () => {
                 </svg>
               </div>
               <p className="text-gray-600 mb-4">Review and approve events, manage categories, and monitor event metrics.</p>
-              <button className="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-md transition duration-300">
+              <Link to="/events" className="inline-block bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-md transition duration-300">
                 Manage Events
-              </button>
+              </Link>
             </div>
 
             {/* System Settings Card */}

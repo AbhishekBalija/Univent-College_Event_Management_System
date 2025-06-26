@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context';
 
 const OrganizerDashboardPage = () => {
@@ -32,9 +32,9 @@ const OrganizerDashboardPage = () => {
                 </svg>
               </div>
               <p className="text-gray-600 mb-4">Create a new event, set up registration, and publish it to participants.</p>
-              <button className="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-md transition duration-300">
+              <Link to="/events/create" className="inline-block bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-md transition duration-300">
                 Create New Event
-              </button>
+              </Link>
             </div>
 
             {/* Manage Events Card */}
@@ -46,9 +46,9 @@ const OrganizerDashboardPage = () => {
                 </svg>
               </div>
               <p className="text-gray-600 mb-4">View and manage your created events, track registrations, and update details.</p>
-              <button className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md transition duration-300">
+              <Link to="/events" className="inline-block bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md transition duration-300">
                 Manage Events
-              </button>
+              </Link>
             </div>
 
             {/* Announcements Card */}
