@@ -215,7 +215,7 @@ const RegisterForm = ({ onSuccess }) => {
               disabled={isLoading}
             />
             <label htmlFor="acceptTerms" className="ml-2 block text-sm text-gray-700">
-              I accept the <a href="#" className="text-blue-600 hover:text-blue-800">Terms and Conditions</a> and <a href="#" className="text-blue-600 hover:text-blue-800">Privacy Policy</a>
+              I accept the <a href="#" className="text-yellow-300 hover:text-yellow-800">Terms and Conditions</a> and <a href="#" className="text-yellow-300 hover:text-yellow-600">Privacy Policy</a>
             </label>
           </div>
           {formik.touched.acceptTerms && formik.errors.acceptTerms && (

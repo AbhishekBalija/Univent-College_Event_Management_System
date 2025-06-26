@@ -5,7 +5,7 @@ const ForgotPasswordPage = () => {
     <div 
       className="min-h-screen flex flex-col justify-center py-12 sm:px-6 lg:px-8"
       style={{
-        backgroundImage: "url('/Beach Landscape Twilight Sunset Illustration.jpg')",
+        backgroundImage: "url('/beach2.jpg')",
         backgroundSize: 'cover',
         backgroundPosition: 'center',
       }}

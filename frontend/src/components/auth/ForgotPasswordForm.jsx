@@ -40,7 +40,7 @@ const ForgotPasswordForm = () => {
 
   return (
     <div className="w-full max-w-md mx-auto">
-      <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">Forgot Password</h2>
+      <h2 className="text-2xl font-bold text-center text-white mb-6">Forgot Password</h2>
       
       {error && (
         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4" role="alert">
@@ -78,7 +78,7 @@ const ForgotPasswordForm = () => {
             {formik.touched.email && formik.errors.email && (
               <p className="text-red-500 text-xs mt-1">{formik.errors.email}</p>
             )}
-            <p className="text-sm text-gray-600 mt-2">
+            <p className="text-sm text-amber-200 mt-2">
               Enter the email address associated with your account, and we'll send you a link to reset your password.
             </p>
           </div>
@@ -104,7 +104,7 @@ const ForgotPasswordForm = () => {
       <div className="mt-6 text-center">
         <p className="text-sm text-gray-600">
           Remember your password?{' '}
-          <Link to="/login" className="text-blue-600 hover:text-blue-800 font-medium">
+          <Link to="/login" className="text-blue-300 hover:text-blue-700 font-medium">
             Back to login
           </Link>
         </p>

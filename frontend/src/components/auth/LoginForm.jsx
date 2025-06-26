@@ -103,13 +103,13 @@ const LoginForm = ({ onSuccess }) => {
               type="checkbox"
               className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
             />
-            <label htmlFor="remember" className="ml-2 block text-sm text-gray-700">
+            <label htmlFor="remember" className="ml-2 block text-sm text-black">
               Remember me
             </label>
           </div>
           
           <div className="text-sm">
-            <Link to="/forgot-password" className="text-blue-500 hover:text-blue-800">
+            <Link to="/forgot-password" className="text-black hover:text-blue-300">
               Forgot password?
             </Link>
           </div>
@@ -133,9 +133,9 @@ const LoginForm = ({ onSuccess }) => {
       </form>
       
       <div className="mt-6 text-center">
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-black">
           Don't have an account?{' '}
-          <a href="/register" className="text-blue-300 hover:text-blue-800 font-medium">
+          <a href="/register" className="text-blue-300 hover:text-blue-600 font-medium">
             Register here
           </a>
         </p>
