@@ -55,6 +55,8 @@ app.get('/health', (req, res) => {
 // Error handling middleware
 app.use(errorHandler);
 
+module.exports = app;
+
 // Start server
 const PORT = process.env.PORT || 8002;
 app.listen(PORT, () => {

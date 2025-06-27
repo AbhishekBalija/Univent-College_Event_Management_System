@@ -43,11 +43,18 @@ const initializeSocket = (server) => {
       }
     });
 
+    // ✅ Test-only manual emit
+    socket.on('testTriggerAnnouncement', ({ announcement }) => {
+      console.log('[SOCKET] Triggering test announcement broadcast');
+      io.to(`event-${announcement.eventId}`).emit('newAnnouncement', { announcement });
+    });
+
     // Disconnect handler
     socket.on('disconnect', () => {
       console.log(`User disconnected: ${socket.id}`);
     });
   });
+
 
   // Utility functions for emitting events
   const emitToAll = (event, data) => {

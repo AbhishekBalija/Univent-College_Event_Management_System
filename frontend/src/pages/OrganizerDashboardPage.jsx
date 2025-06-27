@@ -92,9 +92,9 @@ const OrganizerDashboardPage = () => {
                 </svg>
               </div>
               <p className="text-gray-600 mb-4">Create and send announcements to event participants and keep them updated.</p>
-              <button className="bg-amber-600 hover:bg-amber-700 text-white py-2 px-4 rounded-md transition duration-300">
+              <Link to="/announcements/create" className="inline-block bg-amber-600 hover:bg-amber-700 text-white py-2 px-4 rounded-md transition duration-300">
                 Create Announcement
-              </button>
+              </Link>
             </div>
           </div>
 

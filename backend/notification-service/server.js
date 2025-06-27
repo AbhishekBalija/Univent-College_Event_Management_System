@@ -74,6 +74,9 @@ server.listen(PORT, () => {
   console.log(`Notification service running on port ${PORT}`);
 });
 
+// Export app for testing
+module.exports = app;
+
 // Handle unhandled promise rejections
 process.on('unhandledRejection', (err) => {
   console.error(`Error: ${err.message}`);
