@@ -13,12 +13,12 @@ exports.createAnnouncement = async (req, res, next) => {
     const userId = req.user.id;
     
     // Set creator name based on available information
-    let creatorName = 'System';
-    
-    if (req.body.creatorName) {
-      creatorName = req.body.creatorName;
-    } else if (req.user.firstName && req.user.lastName) {
+    let creatorName = req.body.creatorName;
+    if (!creatorName && req.user && req.user.firstName && req.user.lastName) {
       creatorName = `${req.user.firstName} ${req.user.lastName}`;
+    }
+    if (!creatorName) {
+      creatorName = 'System';
     }
     
     // Create new announcement

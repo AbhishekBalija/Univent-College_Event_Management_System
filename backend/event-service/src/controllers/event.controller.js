@@ -1,4 +1,5 @@
 const Event = require('../models/Event');
+const axios = require('axios');
 
 /**
  * @desc    Create a new event
@@ -36,6 +37,24 @@ exports.createEvent = async (req, res, next) => {
       organizerName,
       image: image || ''
     });
+    
+    // Send announcement to notification-service
+    try {
+      await axios.post('http://localhost:8003/api/announcements', {
+        title: `New Event: ${title}`,
+        content: `A new event '${title}' has been announced by ${organizerName}.`,
+        eventId: event._id,
+        priority: 'high',
+        creatorName: organizerName,
+        isPublished: true
+      }, {
+        headers: {
+          Authorization: req.headers['authorization'] || ''
+        }
+      });
+    } catch (announceErr) {
+      console.error('Failed to announce new event:', announceErr.message);
+    }
     
     res.status(201).json({
       success: true,
