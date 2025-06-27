@@ -3,6 +3,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import { eventService } from '../services';
 import { useAuth } from '../context/AuthContext';
 import EventRegistrationForm from '../components/events/EventRegistrationForm';
+import EventAnnouncements from '../components/events/EventAnnouncements';
 
 const EventDetailPage = () => {
   const { eventId } = useParams();
@@ -21,6 +22,7 @@ const EventDetailPage = () => {
   // Check if user is the event creator
   const isEventCreator = event && user && event.createdBy === user.id;
   // Check if user is a participant (not admin or organizer)
+  // eslint-disable-next-line no-unused-vars
   const isParticipant = user && user.role === 'participant';
 
   // Function to fetch event details
@@ -91,6 +93,7 @@ const EventDetailPage = () => {
     
     // Clean up interval on component unmount
     return () => clearInterval(participantPolling);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [eventId, user]);
 
   const handleRegister = async () => {
@@ -406,6 +409,11 @@ const EventDetailPage = () => {
             </div>
           </div>
         )}
+        
+        {/* Event Announcements Section */}
+        <div className="mt-8">
+          <EventAnnouncements eventId={eventId} eventTitle={event?.title} />
+        </div>
       </div>
     </div>
   );

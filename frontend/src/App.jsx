@@ -12,7 +12,10 @@ import {
   EventDetailPage,
   CreateEventPage,
   EditEventPage,
-  ProfilePage
+  ProfilePage,
+  AnnouncementsPage,
+  CreateAnnouncementPage,
+  EditAnnouncementPage
 } from './pages';
 import { ProtectedRoute } from './components/auth';
 
@@ -58,6 +61,13 @@ function App() {
           {/* Profile Route */}
           <Route path="/profile" element={<Layout />}>
             <Route index element={<ProfilePage />} />
+          </Route>
+          
+          {/* Announcement Routes */}
+          <Route path="/announcements" element={<Layout />}>
+            <Route index element={<AnnouncementsPage />} />
+            <Route path="create" element={<CreateAnnouncementPage />} />
+            <Route path="edit/:id" element={<EditAnnouncementPage />} />
           </Route>
         </Route>
       </Routes>

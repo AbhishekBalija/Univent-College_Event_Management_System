@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context';
-import { eventService } from '../services';
+import { eventService, announcementService } from '../services';
+import { RealtimeAnnouncements } from '../components/announcements';
 
 const HomePage = () => {
   const { user } = useAuth();
@@ -12,11 +13,7 @@ const HomePage = () => {
   // Default placeholder image for events without images
   const defaultEventImage = '/beach.jpg';
   
-  const announcements = [
-    { id: 1, title: 'New Event Registration Open', content: 'Registration for the upcoming Hackathon is now open!', date: '2023-12-01' },
-    { id: 2, title: 'System Maintenance', content: 'The platform will be down for maintenance on Dec 10th from 2-4 AM.', date: '2023-11-28' },
-    { id: 3, title: 'Holiday Schedule', content: 'Check out the special holiday events schedule for December.', date: '2023-11-25' },
-  ];
+  const [announcements, setAnnouncements] = useState([]);
   
   const leaderboardData = [
     { id: 1, name: 'Alex Johnson', event: 'Coding Challenge', score: 95 },
@@ -27,39 +24,59 @@ const HomePage = () => {
   ];
   
   useEffect(() => {
-    const fetchEvents = async () => {
+    const fetchData = async () => {
       try {
         setLoading(true);
-        const data = await eventService.getAllEvents();
+        
+        // Fetch events
+        const eventsData = await eventService.getAllEvents();
         
         // Get events data, ensuring we have an array
-        let eventsData = Array.isArray(data) ? data : data.data || [];
+        let eventsArray = Array.isArray(eventsData) ? eventsData : eventsData.data || [];
         
         // Filter out sample events (events with titles containing 'sample' or 'test')
-        eventsData = eventsData.filter(event => {
+        eventsArray = eventsArray.filter(event => {
           const title = event.title.toLowerCase();
           return !title.includes('sample') && !title.includes('test');
         });
         
         // Sort events by date (upcoming first)
-        eventsData.sort((a, b) => new Date(a.date) - new Date(b.date));
+        eventsArray.sort((a, b) => new Date(a.date) - new Date(b.date));
         
         // Take only the first 3 upcoming events
-        const upcomingEventsData = eventsData
+        const upcomingEventsData = eventsArray
           .filter(event => new Date(event.date) >= new Date())
           .slice(0, 3);
         
         setEvents(upcomingEventsData);
+        
+        // Fetch announcements
+        const announcementsData = await announcementService.getAllAnnouncements({
+          isPublished: true
+        });
+        
+        // Get announcements data, ensuring we have an array
+        const announcementsArray = Array.isArray(announcementsData) 
+          ? announcementsData 
+          : announcementsData.data || [];
+        
+        // Sort announcements by date (newest first)
+        announcementsArray.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        
+        // Take only the first 3 announcements
+        const latestAnnouncements = announcementsArray.slice(0, 3);
+        
+        setAnnouncements(latestAnnouncements);
         setError(null);
       } catch (err) {
-        console.error('Failed to fetch events:', err);
-        setError('Failed to load events. Please try again later.');
+        console.error('Failed to fetch data:', err);
+        setError('Failed to load data. Please try again later.');
       } finally {
         setLoading(false);
       }
     };
     
-    fetchEvents();
+    fetchData();
   }, []);
   
   if (loading) {
@@ -91,6 +108,8 @@ const HomePage = () => {
   
   return (
     <div className="pb-12 overflow-y-auto">
+      {/* Real-time announcements component */}
+      <RealtimeAnnouncements />
       {/* Hero Section */}
       <section className="relative bg-gradient-to-r from-blue-600 to-indigo-700 text-white rounded-xl overflow-hidden mb-8">
         <div className="absolute inset-0 bg-black opacity-20"></div>
@@ -217,13 +236,26 @@ const HomePage = () => {
             </div>
             <div className="p-6">
               <div className="space-y-4">
-                {announcements.map(announcement => (
-                  <div key={announcement.id} className="border-b border-gray-200 pb-4 last:border-0 last:pb-0">
-                    <h3 className="text-lg font-semibold text-gray-800">{announcement.title}</h3>
-                    <p className="text-gray-600 mb-2">{announcement.content}</p>
-                    <span className="text-sm text-gray-500">{new Date(announcement.date).toLocaleDateString()}</span>
+                {announcements.length > 0 ? (
+                  announcements.map(announcement => (
+                    <div key={announcement._id} className="border-b border-gray-200 pb-4 last:border-0 last:pb-0">
+                      <h3 className="text-lg font-semibold text-gray-800">{announcement.title}</h3>
+                      <p className="text-gray-600 mb-2">{announcement.content}</p>
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm text-gray-500">{new Date(announcement.createdAt).toLocaleDateString()}</span>
+                        {announcement.priority === 'high' && (
+                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                            High Priority
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <div className="text-center py-4">
+                    <p className="text-gray-500">No announcements available.</p>
                   </div>
-                ))}
+                )}
               </div>
               <div className="mt-6 text-center">
                 <Link to="/announcements" className="text-blue-600 hover:text-blue-800 font-medium inline-flex items-center">

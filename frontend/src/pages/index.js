@@ -12,3 +12,8 @@ export { default as EventsPage } from './EventsPage';
 export { default as EventDetailPage } from './EventDetailPage';
 export { default as CreateEventPage } from './CreateEventPage';
 export { default as EditEventPage } from './EditEventPage';
+
+// Announcement Pages
+export { default as AnnouncementsPage } from './AnnouncementsPage';
+export { default as CreateAnnouncementPage } from './CreateAnnouncementPage';
+export { default as EditAnnouncementPage } from './EditAnnouncementPage';

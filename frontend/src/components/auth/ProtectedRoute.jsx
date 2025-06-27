@@ -33,7 +33,9 @@ const ProtectedRoute = () => {
     if (user.role === 'admin' && 
         !location.pathname.includes('/admindashboard') && 
         !location.pathname.includes('/events') && 
-        !location.pathname.includes('/profile')) {
+        !location.pathname.includes('/profile') &&
+        !location.pathname.includes('/announcements')
+      ) {
       return <Navigate to="/admindashboard" replace />;
     }
     
@@ -41,7 +43,9 @@ const ProtectedRoute = () => {
     if (user.role === 'organizer' && 
         !location.pathname.includes('/organizerdashboard') && 
         !location.pathname.includes('/events') && 
-        !location.pathname.includes('/profile')) {
+        !location.pathname.includes('/profile') &&
+        !location.pathname.includes('/announcements')
+      ) {
       return <Navigate to="/organizerdashboard" replace />;
     }
     
