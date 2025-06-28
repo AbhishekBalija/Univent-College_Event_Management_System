@@ -30,23 +30,23 @@ const initializeSocket = (server) => {
 
   // Handle socket connections
   leaderboardIO.on('connection', (socket) => {
-    console.log(`User connected to leaderboard: ${socket.id}`);
+    // console.log(`User connected to leaderboard: ${socket.id}`);
 
     // Join event-specific room
     socket.on('join-event', (eventId) => {
       socket.join(`event-${eventId}`);
-      console.log(`User ${socket.id} joined event room: event-${eventId}`);
+      // console.log(`User ${socket.id} joined event room: event-${eventId}`);
     });
 
     // Leave event-specific room
     socket.on('leave-event', (eventId) => {
       socket.leave(`event-${eventId}`);
-      console.log(`User ${socket.id} left event room: event-${eventId}`);
+      // console.log(`User ${socket.id} left event room: event-${eventId}`);
     });
 
     // Handle disconnection
     socket.on('disconnect', () => {
-      console.log(`User disconnected from leaderboard: ${socket.id}`);
+      // console.log(`User disconnected from leaderboard: ${socket.id}`);
     });
   });
 

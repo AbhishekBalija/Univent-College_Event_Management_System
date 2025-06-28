@@ -28,15 +28,15 @@ const CollegeLeaderboard = () => {
         setError(null);
         
         const data = await leaderboardService.getCollegeLeaderboard();
-        console.log('College leaderboard data:', data);
+        // console.log('College leaderboard data:', data);
         
         // Log each college entry to help with debugging
-        if (data && data.length > 0) {
-          console.log('College entries:');
-          data.forEach((college, index) => {
-            console.log(`${index + 1}. ${college.college} - ${college.participantCount} participants, ${college.totalScore} points`);
-          });
-        }
+        // if (data && data.length > 0) {
+        //   // console.log('College entries:');
+        //   data.forEach((college, index) => {
+        //     console.log(`${index + 1}. ${college.college} - ${college.participantCount} participants, ${college.totalScore} points`);
+        //   });
+        // }
         
         setCollegeData(data);
       } catch (err) {

@@ -33,7 +33,7 @@ export const SocketProvider = ({ children }) => {
 
     // Set up event listeners
     socketInstance.on('connect', () => {
-      console.log('Socket connected');
+      // console.log('Socket connected');
       setConnected(true);
       
       // Join user role room

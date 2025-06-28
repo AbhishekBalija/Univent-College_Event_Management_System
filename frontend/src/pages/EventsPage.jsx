@@ -16,7 +16,7 @@ const EventsPage = () => {
       try {
         setLoading(true);
         const data = await eventService.getAllEvents();
-        console.log('Fetched data from getAllEvents:', data);
+        // console.log('Fetched data from getAllEvents:', data);
         
         // Get events data, ensuring we have an array
         let eventsData = Array.isArray(data) ? data : data.data || [];

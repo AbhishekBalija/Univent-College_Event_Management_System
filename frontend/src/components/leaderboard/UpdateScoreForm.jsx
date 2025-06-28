@@ -86,7 +86,7 @@ const UpdateScoreForm = ({ eventId, onScoreUpdated }) => {
           const participantsData = await eventService.getEventParticipants(
             eventId
           );
-          console.log("Participants data from API:", participantsData);
+          // console.log("Participants data from API:", participantsData);
           if (participantsData && participantsData.length > 0) {
             // Format participants from the dedicated participants endpoint
             const formattedParticipants = participantsData.map((p) => {
@@ -134,9 +134,9 @@ const UpdateScoreForm = ({ eventId, onScoreUpdated }) => {
 
         // Fallback: get participants from event data
         const eventData = await eventService.getEventById(eventId);
-        console.log("Event data from API:", eventData);
+        // console.log("Event data from API:", eventData);
         if (eventData && eventData.participants) {
-          console.log("Participants from event data:", eventData.participants);
+          // console.log("Participants from event data:", eventData.participants);
           // Format participants from event data
           const formattedParticipants = eventData.participants.map((p) => {
             if (typeof p === "object") {
@@ -270,7 +270,7 @@ const UpdateScoreForm = ({ eventId, onScoreUpdated }) => {
       };
 
       // Log the exact college value being sent to help with debugging
-      console.log("Updating score with college:", scoreData.college);
+      // console.log("Updating score with college:", scoreData.college);
 
       // Update participant score
       await leaderboardService.updateParticipantScore(

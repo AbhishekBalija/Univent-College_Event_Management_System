@@ -38,10 +38,10 @@ const EventDetailPage = () => {
         return;
       }
 
-      console.log('Fetching event with ID:', eventId); // Debug log
+      // console.log('Fetching event with ID:', eventId); // Debug log
       
       const eventData = await eventService.getEventById(eventId);
-      console.log('Event data received:', eventData); // Debug log to see what's returned
+      // console.log('Event data received:', eventData); // Debug log to see what's returned
       setEvent(eventData);
       
       // Fetch participants in a separate call to avoid race conditions
@@ -61,7 +61,7 @@ const EventDetailPage = () => {
     
     try {
       const participantsData = await eventService.getEventParticipants(eventId);
-      console.log('Participants data received:', participantsData); // Debug log
+      // console.log('Participants data received:', participantsData); // Debug log
       
       // Ensure we have an array of participants
       const list = Array.isArray(participantsData) ? participantsData : 
@@ -105,7 +105,7 @@ const EventDetailPage = () => {
     
     // Only allow participants to register
     if (user.role === 'admin' || user.role === 'organizer') {
-      console.log('Admins and organizers cannot register for events');
+      // console.log('Admins and organizers cannot register for events');
       return;
     }
     
