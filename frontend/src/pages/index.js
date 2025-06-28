@@ -17,3 +17,6 @@ export { default as EditEventPage } from './EditEventPage';
 export { default as AnnouncementsPage } from './AnnouncementsPage';
 export { default as CreateAnnouncementPage } from './CreateAnnouncementPage';
 export { default as EditAnnouncementPage } from './EditAnnouncementPage';
+
+// Leaderboard Pages
+export { default as LeaderboardPage } from './LeaderboardPage';

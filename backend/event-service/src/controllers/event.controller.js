@@ -260,8 +260,9 @@ exports.registerForEvent = async (req, res, next) => {
     // Add user to participants
     event.participants.push({
       userId: req.user.id,
-      name: name || 'Participant', // Use provided name or default
-      email: email || 'No email provided', // Use provided email or default
+      name: name || `${req.user.firstName || ''} ${req.user.lastName || ''}`.trim() || 'Participant', // Use provided name or default
+      email: email || req.user.email || 'No email provided', // Use provided email or default
+      college: req.user.college || 'No college', // Add college information
       specialRequirements: specialRequirements || ''
     });
     
@@ -338,7 +339,7 @@ exports.getEventParticipants = async (req, res, next) => {
     // Allow event creator, admin, or registered participants to view
     const isAuthorized = 
       event.createdBy.toString() === req.user.id.toString() ||
-      req.user.role === 'admin' ||
+      req.user.role === 'admin' || 'organizer' ||
       event.isUserRegistered(req.user.id);
       
     if (!isAuthorized) {

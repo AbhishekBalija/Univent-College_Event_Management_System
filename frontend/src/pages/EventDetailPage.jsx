@@ -252,22 +252,30 @@ const EventDetailPage = () => {
               </p>
             </div>
             {/* Admin/Organizer actions */}
-            {isEventCreator && (
-              <div className="flex space-x-3">
-                <Link
-                  to={`/events/${eventId}/edit`}
-                  className="inline-flex items-center px-3 py-1.5 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                >
-                  Edit
-                </Link>
-                <button
-                  onClick={handleDelete}
-                  className="inline-flex items-center px-3 py-1.5 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
-                >
-                  Delete
-                </button>
-              </div>
-            )}
+            <div className="flex space-x-3">
+              {isEventCreator && (
+                <>
+                  <Link
+                    to={`/events/${eventId}/edit`}
+                    className="inline-flex items-center px-3 py-1.5 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  >
+                    Edit
+                  </Link>
+                  <button
+                    onClick={handleDelete}
+                    className="inline-flex items-center px-3 py-1.5 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                  >
+                    Delete
+                  </button>
+                </>
+              )}
+              <Link
+                to={`/leaderboard/${eventId}`}
+                className="inline-flex items-center px-3 py-1.5 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              >
+                View Leaderboard
+              </Link>
+            </div>
           </div>
           <div className="border-t border-gray-200">
             <dl>

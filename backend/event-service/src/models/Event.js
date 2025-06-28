@@ -46,6 +46,7 @@ const eventSchema = new mongoose.Schema({
     },
     name: String,
     email: String,
+    college: String,
     registrationDate: {
       type: Date,
       default: Date.now

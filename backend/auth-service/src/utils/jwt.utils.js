@@ -2,14 +2,15 @@ const jwt = require('jsonwebtoken');
 
 /**
  * Generate JWT token for a user
- * @param {Object} user - User object containing id and role
+ * @param {Object} user - User object containing id, role, and college
  * @returns {String} JWT token
  */
 exports.generateToken = (user) => {
   return jwt.sign(
     { 
       id: user._id,
-      role: user.role 
+      role: user.role,
+      college: user.college
     },
     process.env.JWT_SECRET,
     { expiresIn: process.env.JWT_EXPIRE || '1d' }

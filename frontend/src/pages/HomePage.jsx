@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context';
-import { eventService, announcementService } from '../services';
+import { eventService, announcementService, leaderboardService } from '../services';
 import { RealtimeAnnouncements } from '../components/announcements';
 
 const HomePage = () => {
@@ -14,14 +14,7 @@ const HomePage = () => {
   const defaultEventImage = '/beach.jpg';
   
   const [announcements, setAnnouncements] = useState([]);
-  
-  const leaderboardData = [
-    { id: 1, name: 'Alex Johnson', event: 'Coding Challenge', score: 95 },
-    { id: 2, name: 'Sam Smith', event: 'Hackathon 2023', score: 88 },
-    { id: 3, name: 'Jamie Lee', event: 'Design Contest', score: 82 },
-    { id: 4, name: 'Taylor Wong', event: 'Quiz Bowl', score: 79 },
-    { id: 5, name: 'Jordan Parker', event: 'Debate Tournament', score: 75 },
-  ];
+  const [leaderboardData, setLeaderboardData] = useState([]);
   
   useEffect(() => {
     const fetchData = async () => {
@@ -67,6 +60,28 @@ const HomePage = () => {
         const latestAnnouncements = announcementsArray.slice(0, 3);
         
         setAnnouncements(latestAnnouncements);
+        
+        // Fetch top performers for leaderboard
+        try {
+          const topPerformersData = await leaderboardService.getTopPerformers();
+          
+          // Format the data to match the expected structure for the leaderboard table
+          const formattedLeaderboardData = topPerformersData
+            .slice(0, 5) // Take only top 5 performers
+            .map((performer, index) => ({
+              id: performer.userId || index + 1,
+              name: performer.userName,
+              event: `${performer.eventCount} ${performer.eventCount === 1 ? 'Event' : 'Events'}`,
+              score: performer.totalScore
+            }));
+          
+          setLeaderboardData(formattedLeaderboardData);
+        } catch (leaderboardErr) {
+          console.error('Failed to fetch leaderboard data:', leaderboardErr);
+          // Keep the leaderboard empty if there's an error
+          setLeaderboardData([]);
+        }
+        
         setError(null);
       } catch (err) {
         console.error('Failed to fetch data:', err);
@@ -202,9 +217,14 @@ const HomePage = () => {
                           </svg>
                           <span>{event.participants ? `${event.participants.length} / ${event.capacity} registered` : `0 / ${event.capacity} registered`}</span>
                         </div>
-                        <Link to={`/events/${event._id}`} className="block text-center bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md transition duration-300">
-                          View Details
-                        </Link>
+                        <div className="flex space-x-2">
+                          <Link to={`/events/${event._id}`} className="flex-1 text-center bg-blue-600 hover:bg-blue-700 text-white py-2 px-2 rounded-md transition duration-300">
+                            View Details
+                          </Link>
+                          <Link to={`/leaderboard/${event._id}`} className="flex-1 text-center bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-2 rounded-md transition duration-300">
+                            Leaderboard
+                          </Link>
+                        </div>
                       </div>
                     </div>
                   ))
@@ -285,18 +305,26 @@ const HomePage = () => {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200">
-                    {leaderboardData.map((entry, index) => (
-                      <tr key={entry.id}>
-                        <td className="py-2 px-3 whitespace-nowrap">
-                          <div className={`inline-flex items-center justify-center w-6 h-6 rounded-full text-sm font-medium ${index < 3 ? 'bg-yellow-100 text-yellow-800' : 'bg-gray-100 text-gray-800'}`}>
-                            {index + 1}
-                          </div>
+                    {leaderboardData.length > 0 ? (
+                      leaderboardData.map((entry, index) => (
+                        <tr key={entry.id}>
+                          <td className="py-2 px-3 whitespace-nowrap">
+                            <div className={`inline-flex items-center justify-center w-6 h-6 rounded-full text-sm font-medium ${index < 3 ? 'bg-yellow-100 text-yellow-800' : 'bg-gray-100 text-gray-800'}`}>
+                              {index + 1}
+                            </div>
+                          </td>
+                          <td className="py-2 px-3 whitespace-nowrap text-sm font-medium text-gray-900">{entry.name}</td>
+                          <td className="py-2 px-3 whitespace-nowrap text-sm text-gray-500">{entry.event}</td>
+                          <td className="py-2 px-3 whitespace-nowrap text-sm font-medium text-green-600">{entry.score}</td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td colSpan="4" className="py-4 text-center text-gray-500">
+                          No leaderboard data available yet.
                         </td>
-                        <td className="py-2 px-3 whitespace-nowrap text-sm font-medium text-gray-900">{entry.name}</td>
-                        <td className="py-2 px-3 whitespace-nowrap text-sm text-gray-500">{entry.event}</td>
-                        <td className="py-2 px-3 whitespace-nowrap text-sm font-medium text-green-600">{entry.score}</td>
                       </tr>
-                    ))}
+                    )}
                   </tbody>
                 </table>
               </div>

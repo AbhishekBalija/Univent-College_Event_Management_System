@@ -73,9 +73,12 @@ const EventCard = ({ event }) => {
         </div>
       </div>
       <div className="bg-gray-50 px-5 py-3">
-        <div className="text-sm">
+        <div className="text-sm flex justify-between">
           <Link to={`/events/${event._id}`} className="font-medium text-indigo-600 hover:text-indigo-500">
             View details
+          </Link>
+          <Link to={`/leaderboard/${event._id}`} className="font-medium text-indigo-600 hover:text-indigo-500">
+            View leaderboard
           </Link>
         </div>
       </div>
