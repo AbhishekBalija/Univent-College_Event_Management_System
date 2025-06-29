@@ -16,7 +16,9 @@ import {
   AnnouncementsPage,
   CreateAnnouncementPage,
   EditAnnouncementPage,
-  LeaderboardPage
+  LeaderboardPage,
+  SettingsPage,
+  SystemSettingsPage
 } from './pages';
 import { ProtectedRoute } from './components/auth';
 
@@ -75,6 +77,16 @@ function App() {
           <Route path="/leaderboard" element={<Layout />}>
             <Route index element={<LeaderboardPage />} />
             <Route path=":eventId" element={<LeaderboardPage />} />
+          </Route>
+          
+          {/* Settings Routes */}
+          <Route path="/settings" element={<Layout />}>
+            <Route index element={<SettingsPage />} />
+          </Route>
+          
+          {/* System Settings Routes - Admin Only */}
+          <Route path="/system-settings" element={<Layout />}>
+            <Route index element={<SystemSettingsPage />} />
           </Route>
         </Route>
       </Routes>

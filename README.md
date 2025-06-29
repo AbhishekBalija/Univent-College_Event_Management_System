@@ -1,173 +1,139 @@
-# 🎉 Univent - Real-Time College Event Management System
+# Univent - College Event Management System
 
-## 🚀 Project Overview
+## Overview
+Univent is a real-time event management platform designed specifically for college environments. It enables seamless organization and participation in college events, featuring live updates and interactive leaderboards.
 
-**Univent** is a dynamic, real-time event management platform tailored for college environments. It handles:
+## Key Features
+- 🎫 Event Management & Registration
+- 📢 Real-time Announcements
+- 🏆 Live Leaderboard Updates
+- 👥 Role-based Access Control
+- 📱 Real-time Notifications
+- 📊 Event Analytics
 
-- 🎫 Event registration & tracking  
-- 📢 Live announcements  
-- 🏆 Leaderboard updates  
-- 👥 Role-based access  
+## Technology Stack
+- **Frontend**: React.js with TailwindCSS
+- **Backend**: Node.js with Express.js
+- **Database**: MongoDB
+- **Real-time Communication**: Socket.IO
+- **Authentication**: JWT-based
 
-Built using the **MERN stack** + **Socket.IO** for real-time communication.
+## Architecture
+Univent follows a microservice architecture with four core services:
 
----
+- **Authentication Service**: User management and authentication
+- **Event Service**: Event creation and management
+- **Notification Service**: Real-time announcements
+- **Leaderboard Service**: Participant scoring and rankings
 
-## 🏗️ Architecture
+## Getting Started
 
-Univent follows a **Microservice Architecture** to ensure scalability, maintainability, and separation of concerns.
+### Prerequisites
+- Node.js (v14 or higher)
+- MongoDB (v4.4 or higher)
+- npm or yarn
 
-### 🔄 Microservice Components
+### Installation
 
-- **Authentication Service**: Handles user registration, login, and token management
-- **Event Service**: Manages event creation, updates, and participant registration
-- **Notification Service**: Handles real-time announcements and updates
-- **Leaderboard Service**: Tracks and updates participant scores
-
-## 🗂️ Project Structure
-
+1. Clone the repository
+```bash
+git clone https://github.com/yourusername/univent.git
+cd univent
 ```
-eventflow_project/
-├── frontend/                 # React frontend application
-│   ├── public/               # Static assets
+
+2. Install dependencies
+```bash
+# Install frontend dependencies
+cd frontend
+npm install
+
+# Install backend dependencies
+cd ../backend
+cd auth-service && npm install
+cd ../event-service && npm install
+cd ../notification-service && npm install
+cd ../leaderboard-service && npm install
+```
+
+3. Environment Setup
+```bash
+# Create .env files in each service directory
+# Example for auth-service:
+MONGODB_URI=mongodb://localhost:27017/univent
+JWT_SECRET=your_jwt_secret
+PORT=8001
+```
+
+4. Start the services
+```bash
+# Start all services using Docker
+docker-compose up
+
+# Or start services individually
+cd auth-service && npm run dev
+cd event-service && npm run dev
+cd notification-service && npm run dev
+cd leaderboard-service && npm run dev
+cd frontend && npm start
+```
+
+## User Roles
+
+| Role | Access Level |
+|------|-------------|
+| Admin | Full system access, user management |
+| Organizer | Event creation and management |
+| Participant | Event registration and participation |
+
+## API Services
+
+### Authentication Service (Port: 8001)
+- User registration and login
+- JWT token management
+- Role-based access control
+
+### Event Service (Port: 8002)
+- Event CRUD operations
+- Registration management
+- Participant tracking
+
+### Notification Service (Port: 8003)
+- Real-time announcements
+- Event updates
+- System notifications
+
+### Leaderboard Service (Port: 8004)
+- Score tracking
+- Ranking calculations
+- Achievement management
+
+## Real-time Features
+The platform uses Socket.IO for real-time updates including:
+- Live announcements
+- Event status changes
+- Leaderboard updates
+- Registration notifications
+
+## Project Structure
+```
+univent/
+├── frontend/                 # React frontend
 │   ├── src/
-│   │   ├── components/       # Reusable UI components
-│   │   ├── pages/            # Page components
-│   │   ├── services/         # API service connectors
-│   │   ├── context/          # React context providers
-│   │   ├── hooks/            # Custom React hooks
-│   │   └── utils/            # Utility functions
-│   └── package.json          # Frontend dependencies
+│   │   ├── components/      # Reusable components
+│   │   ├── pages/          # Page components
+│   │   ├── services/       # API services
+│   │   └── context/        # React context
 │
 ├── backend/
-│   ├── auth-service/         # Authentication microservice
-│   │   ├── controllers/      # Request handlers
-│   │   ├── models/           # Database schemas
-│   │   ├── routes/           # API endpoints
-│   │   └── middleware/       # Custom middleware
-│   │
-│   ├── event-service/        # Event management microservice
-│   │   ├── controllers/
-│   │   ├── models/
-│   │   ├── routes/
-│   │   └── middleware/
-│   │
-│   ├── notification-service/ # Real-time notification microservice
-│   │   ├── controllers/
-│   │   ├── models/
-│   │   ├── routes/
-│   │   └── socket/           # Socket.IO handlers
-│   │
-│   ├── leaderboard-service/  # Leaderboard microservice
-│   │   ├── controllers/
-│   │   ├── models/
-│   │   ├── routes/
-│   │   └── middleware/
-│   │
-│   └── gateway/              # API Gateway for service orchestration
-│       ├── routes/           # Route forwarding
-│       └── middleware/       # Gateway middleware
-│
-└── docker-compose.yml        # Container orchestration
+│   ├── auth-service/       # Authentication
+│   ├── event-service/      # Event management
+│   ├── notification-service/ # Real-time notifications
+│   ├── leaderboard-service/ # Scoring system
+│   └── gateway/           # API Gateway
 ```
 
-### 📦 1. Frontend — `frontend/`
+## License
+This project is licensed under the MIT License - see the LICENSE file for details.
 
-- **Tech Stack**: React.js (CRA)
-- Key Pages:
-  - Welcome Page
-  - Login/Register (admin creates organizer accounts)
-  - Event Dashboard
-  - Leaderboard
-  - Admin Panel
-  - Announcements Board
-
-### 🔧 2. Backend — `backend/`
-
-- **Tech Stack**: Node.js + Express.js
-- **Libraries**:
-  - `Mongoose` for MongoDB interaction
-  - `Socket.IO` for real-time updates
-- Main APIs:
-  - User Auth (JWT-based)
-  - Event CRUD
-  - Announcements
-  - Leaderboard
-  - Role-based middleware
-
-### 🗃️ 3. Database — MongoDB Atlas
-
-#### 🧑‍💻 `users` Collection
-```js
-{
-  _id,
-  username,
-  email,
-  password,
-  role: 'admin' | 'organizer' | 'participant',
-  createdAt
-}
-```
-
-#### 🎯 `events` Collection
-```js
-{
-  _id,
-  name,
-  description,
-  status,
-  createdBy,
-  createdAt,
-  participants: [userId]
-}
-```
-
-#### 📢 `announcements` Collection
-```js
-{
-  _id,
-  message,
-  timestamp,
-  createdBy
-}
-```
-
-#### 🏆 `leaderboards` Collection
-```js
-{
-  _id,
-  participantId,
-  score,
-  eventId
-}
-```
-### 👤 User Roles & Permissions
-
-| Role | Description | Permissions |
-| --- | --- | --- |
-| Admin | Manages everything | Full CRUD on all resources, creates organizer accounts |
-| Organizer | Manages events & participants | Event-specific CRUD, view announcements |
-| Participant | Regular user joining events & tracking scores | View-only: events, announcements, scores |
-
-### 🔐 Authentication & Authorization
-
-- JWT-based token system
-- Role-based route protection (admin/organizer/participant)
-- Middleware checks per endpoint
-
-### 📡 Real-Time Features — Socket.IO
-
-Real-time broadcast for:
-
-- ✅ New event creation
-- 📢 Announcements
-- 🏁 Leaderboard score updates
-
-### 🚀 Deployment Stack
-
-| Component | Tech/Service |
-| --- | --- |
-| Frontend | React (CRA),TailwindCSS Vercel |
-| Backend | Node.js + Express, Render / Railway / Cyclic |
-| Database | MongoDB Atlas |
-| Real-time | Socket.IO |
+## Contributing
+Please read CONTRIBUTING.md for details on our code of conduct and the process for submitting pull requests.

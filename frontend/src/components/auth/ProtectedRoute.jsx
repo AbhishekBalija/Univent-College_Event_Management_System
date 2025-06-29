@@ -35,7 +35,8 @@ const ProtectedRoute = () => {
         !location.pathname.includes('/events') && 
         !location.pathname.includes('/profile') &&
         !location.pathname.includes('/announcements') &&
-        !location.pathname.includes('/leaderboard')
+        !location.pathname.includes('/leaderboard') &&
+        !location.pathname.includes('/system-settings')
       ) {
       return <Navigate to="/admindashboard" replace />;
     }
@@ -46,7 +47,8 @@ const ProtectedRoute = () => {
         !location.pathname.includes('/events') && 
         !location.pathname.includes('/profile') &&
         !location.pathname.includes('/announcements') &&
-        !location.pathname.includes('/leaderboard')
+        !location.pathname.includes('/leaderboard') &&
+        !location.pathname.includes('/settings')
       ) {
       return <Navigate to="/organizerdashboard" replace />;
     }

@@ -6,6 +6,8 @@ export { default as HomePage } from './HomePage';
 export { default as AdminDashboardPage } from './AdminDashboardPage';
 export { default as OrganizerDashboardPage } from './OrganizerDashboardPage';
 export { default as ProfilePage } from './ProfilePage';
+export { default as SettingsPage } from './SettingsPage';
+export { default as SystemSettingsPage } from './SystemSettingsPage';
 
 // Event Pages
 export { default as EventsPage } from './EventsPage';

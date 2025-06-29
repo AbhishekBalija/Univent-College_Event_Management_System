@@ -135,9 +135,9 @@ const AdminDashboardPage = () => {
                 </svg>
               </div>
               <p className="text-gray-600 mb-4">Configure system settings, manage integrations, and monitor platform health.</p>
-              <button className="bg-gray-600 hover:bg-gray-700 text-white py-2 px-4 rounded-md transition duration-300">
+              <Link to="/system-settings" className="inline-block bg-gray-600 hover:bg-gray-700 text-white py-2 px-4 rounded-md transition duration-300">
                 System Settings
-              </button>
+              </Link>
             </div>
           </div>
 
