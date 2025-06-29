@@ -38,6 +38,9 @@ app.use(cors({
   credentials: true,
   optionsSuccessStatus: 200
 })); // Enable CORS for all routes
+
+app.options('*', cors());
+
 app.use(express.json()); // Parse JSON request body
 
 // Import database connection
