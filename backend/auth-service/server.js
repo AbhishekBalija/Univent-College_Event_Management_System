@@ -29,7 +29,10 @@ app.use(limiter);
 
 // Middleware
 app.use(helmet()); // Set security headers
-app.use(cors()); // Enable CORS for all routes
+app.use(cors({
+  origin: process.env.CLIENT_URL || 'http://localhost:5173',
+  credentials: true
+})); // Enable CORS for frontend
 app.use(express.json()); // Parse JSON request body
 
 // Import database connection
