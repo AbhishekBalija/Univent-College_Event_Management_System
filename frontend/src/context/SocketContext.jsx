@@ -24,7 +24,7 @@ export const SocketProvider = ({ children }) => {
     }
 
     // Connect to socket server
-    const socketInstance = io('http://localhost:8003', {
+    const socketInstance = io(import.meta.env.VITE_NOTIFICATION_SERVICE_URL || 'http://localhost:8003', {
       withCredentials: true,
       auth: {
         token: localStorage.getItem('token')

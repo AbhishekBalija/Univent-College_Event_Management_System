@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // Base URL for auth service
-const API_URL = 'http://localhost:8001/api/auth';
+const API_URL = import.meta.env.VITE_API_GATEWAY_URL ? `${import.meta.env.VITE_API_GATEWAY_URL}/api/auth` : 'http://localhost:8001/api/auth';
 
 // Create axios instance with default config
 const authApi = axios.create({

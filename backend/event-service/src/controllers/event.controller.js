@@ -40,7 +40,8 @@ exports.createEvent = async (req, res, next) => {
     
     // Send announcement to notification-service
     try {
-      await axios.post('http://localhost:8003/api/announcements', {
+      const notificationServiceUrl = process.env.NOTIFICATION_SERVICE || 'http://localhost:8003';
+      await axios.post(`${notificationServiceUrl}/api/announcements`, {
         title: `New Event: ${title}`,
         content: `A new event '${title}' has been announced by ${organizerName}.`,
         eventId: event._id,

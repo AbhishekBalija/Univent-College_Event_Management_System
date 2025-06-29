@@ -5,7 +5,8 @@ describe('Notification WebSocket API', () => {
   const testEventId = 'test123';
 
   beforeAll((done) => {
-    socket = io('http://localhost:8003', {
+    const notificationServiceUrl = process.env.NOTIFICATION_SERVICE || 'http://localhost:8003';
+    socket = io(notificationServiceUrl, {
       transports: ['websocket'],
       reconnection: false
     });

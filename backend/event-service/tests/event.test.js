@@ -3,7 +3,7 @@ const axios = require('axios');
 const mongoose = require('mongoose');
 const app = require('../server');
 
-const authUrl = 'http://localhost:8001/api/auth'; // Ensure auth-service is running
+const authUrl = process.env.AUTH_SERVICE ? `${process.env.AUTH_SERVICE}/api/auth` : 'http://localhost:8001/api/auth'; // Ensure auth-service is running
 let organizerToken = '';
 let participantToken = '';
 let eventId = '';
@@ -35,8 +35,9 @@ beforeAll(async () => {
     const orgId = regOrg.body.user.id;
 
     // ✅ Use axios to promote to organizer
+    const authService = process.env.AUTH_SERVICE || 'http://localhost:8001';
     const promoteRes = await axios.put(
-      `http://localhost:8001/api/admin/users/${orgId}/role`,
+      `${authService}/api/admin/users/${orgId}/role`,
       { role: 'organizer' },
       { headers: { Authorization: `Bearer ${regOrg.body.token}` } }
     );

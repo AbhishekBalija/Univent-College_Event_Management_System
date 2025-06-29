@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:8003/api/announcements';
+const API_URL = import.meta.env.VITE_API_GATEWAY_URL ? `${import.meta.env.VITE_API_GATEWAY_URL}/api/announcements` : 'http://localhost:8003/api/announcements';
 
 // Create axios instance
 const announcementAPI = axios.create({
