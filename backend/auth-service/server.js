@@ -33,7 +33,8 @@ app.use(cors({
   origin: [process.env.CLIENT_URL, 'http://localhost:5173', 'https://univento.vercel.app'],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true
+  credentials: true,
+  optionsSuccessStatus: 200
 })); // Enable CORS for frontend
 app.use(express.json()); // Parse JSON request body
 
