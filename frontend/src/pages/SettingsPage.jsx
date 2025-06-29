@@ -35,14 +35,20 @@ const SettingsPage = () => {
     const fetchSettings = async () => {
       try {
         setLoading(true);
-        // In a real app, you would fetch settings from the backend
-        // const userSettings = await settingsService.getUserSettings();
-        // setNotification(userSettings.notification);
-        // setTheme(userSettings.theme);
-        // setLanguage(userSettings.language);
+        const response = await settingsService.getUserSettings();
         
-        // Simulate API call
-        await new Promise(resolve => setTimeout(resolve, 500));
+        if (response.success && response.data) {
+          const userSettings = response.data;
+          if (userSettings.notification) setNotification(userSettings.notification);
+          if (userSettings.theme) setTheme(userSettings.theme);
+          if (userSettings.language) setLanguage(userSettings.language);
+          
+          // Set privacy settings if available
+          if (userSettings.privacy) {
+            // Update UI for privacy settings
+            // This would be implemented with state variables for privacy settings
+          }
+        }
       } catch (err) {
         console.error('Failed to fetch settings:', err);
         setError('Failed to load your settings. Please try again.');

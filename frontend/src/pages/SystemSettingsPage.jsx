@@ -44,12 +44,15 @@ const SystemSettingsPage = () => {
       
       try {
         setLoading(true);
-        // In a real app, you would fetch settings from the backend
-        // const systemSettings = await settingsService.getSystemSettings();
-        // setSettings(systemSettings);
+        const response = await settingsService.getSystemSettings();
         
-        // Simulate API call
-        await new Promise(resolve => setTimeout(resolve, 500));
+        if (response.success && response.data) {
+          // Update all settings from response
+          setSettings(prevSettings => ({
+            ...prevSettings,
+            ...response.data
+          }));
+        }
       } catch (err) {
         console.error('Failed to fetch system settings:', err);
         setError('Failed to load system settings. Please try again.');

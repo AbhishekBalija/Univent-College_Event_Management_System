@@ -8,8 +8,7 @@ const createTransporter = async () => {
     if (process.env.NODE_ENV === 'production') {
       // Use real SMTP configuration in production
       return nodemailer.createTransport({
-        host: process.env.EMAIL_HOST,
-        port: process.env.EMAIL_PORT,
+        service: process.env.EMAIL_SERVICE,
         secure: process.env.EMAIL_SECURE === 'true',
         auth: {
           user: process.env.EMAIL_USER,

@@ -36,6 +36,7 @@ const ProtectedRoute = () => {
         !location.pathname.includes('/profile') &&
         !location.pathname.includes('/announcements') &&
         !location.pathname.includes('/leaderboard') &&
+        !location.pathname.includes('/settings') &&
         !location.pathname.includes('/system-settings')
       ) {
       return <Navigate to="/admindashboard" replace />;

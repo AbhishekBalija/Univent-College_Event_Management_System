@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-// Base URL for settings service (using auth service as base since user settings are related to user accounts)
-const API_URL = 'http://localhost:8001/api/settings';
+// Base URL for settings service through the API gateway
+const API_URL = 'http://localhost:8005/api/settings';
 
 // Create axios instance with default config
 const settingsApi = axios.create({
