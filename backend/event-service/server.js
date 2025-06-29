@@ -31,23 +31,26 @@ app.use(limiter);
 
 // Middleware
 app.use(helmet()); // Set security headers
-app.use(
-  cors({
-    origin: [
-      process.env.CLIENT_URL,
-      "http://localhost:5173",
-      "https://univento.vercel.app",
-    ],
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: true,
-    optionsSuccessStatus: 200,
-  })
-); // Enable CORS for all routes
 
-app.options("*", cors());
+// CORS options
+const corsOptions = {
+  origin: [
+    process.env.CLIENT_URL,
+    "http://localhost:5173",
+    "https://univento.vercel.app",
+  ],
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true,
+  optionsSuccessStatus: 200,
+};
 
-app.use(express.json()); // Parse JSON request body
+// Enable CORS for all routes and preflight requests
+app.use(cors(corsOptions));
+app.options("*", cors(corsOptions)); // ✅ fixed this line
+
+// Parse JSON request body
+app.use(express.json());
 
 // Import database connection
 const connectDB = require("./src/config/db.config");
