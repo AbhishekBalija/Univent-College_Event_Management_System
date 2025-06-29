@@ -40,7 +40,7 @@ exports.createEvent = async (req, res, next) => {
     
     // Send announcement to notification-service
     try {
-      const notificationServiceUrl = process.env.NOTIFICATION_SERVICE || 'http://localhost:8003';
+      const notificationServiceUrl = 'https://univent-notification-service.onrender.com' || 'http://localhost:8003';
       await axios.post(`${notificationServiceUrl}/api/announcements`, {
         title: `New Event: ${title}`,
         content: `A new event '${title}' has been announced by ${organizerName}.`,
