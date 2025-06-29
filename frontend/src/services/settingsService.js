@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // Base URL for settings service through the API gateway
-const API_URL = 'https://eventflow-settings-backend.vercel.app/api/settings';
+const API_URL = import.meta.env.VITE_API_GATEWAY_URL ? `${import.meta.env.VITE_API_GATEWAY_URL}/api/settings` : 'http://localhost:8005/api/settings';
 
 // Create axios instance with default config
 const settingsApi = axios.create({
