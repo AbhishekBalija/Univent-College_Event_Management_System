@@ -45,9 +45,6 @@ const corsOptions = {
   optionsSuccessStatus: 200,
 };
 
-// Enable CORS for all routes and preflight requests
-app.use(cors(corsOptions));
-app.options("*", cors(corsOptions)); // ✅ fixed this line
 
 // Parse JSON request body
 app.use(express.json());
