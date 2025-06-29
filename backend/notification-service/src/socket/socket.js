@@ -7,7 +7,7 @@ const socketIO = require('socket.io');
 const initializeSocket = (server) => {
   const io = socketIO(server, {
     cors: {
-      origin: process.env.CLIENT_URL || 'http://localhost:5173', // Allow CORS from frontend
+      origin: [process.env.CLIENT_URL, 'http://localhost:5173', 'https://univento.vercel.app'], // Allow CORS from frontend
       methods: ['GET', 'POST'],
       credentials: true
     }
