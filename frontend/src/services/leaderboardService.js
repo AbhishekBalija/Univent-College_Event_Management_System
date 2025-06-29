@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // Base URL for leaderboard service
-const API_URL = import.meta.env.VITE_API_GATEWAY_URL ? `${import.meta.env.VITE_API_GATEWAY_URL}/api/leaderboard` : 'http://localhost:8004/api/leaderboard';
+const API_URL = 'https://univent-leaderboard-service.onrender.com/api/leaderboard';
 
 // Create axios instance with default config
 const leaderboardApi = axios.create({
