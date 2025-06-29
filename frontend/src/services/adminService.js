@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // Base URL for auth service (since user management is part of auth service)
-const API_URL = import.meta.env.VITE_API_GATEWAY_URL ? `${import.meta.env.VITE_API_GATEWAY_URL}/api/admin` : 'http://localhost:8001/api/admin';
+const API_URL = 'https://eventflow-auth-backend.vercel.app/api/admin';
 
 // Create axios instance with default config
 const adminApi = axios.create({
