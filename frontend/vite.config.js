@@ -6,9 +6,6 @@ import tailwindcss from '@tailwindcss/vite'
 export default defineConfig({
   plugins: [tailwindcss(),react()],
   build: {
-        rollupOptions: {
-      // Optional: Externalize big packages
-      external: ['@mui/icons-material']
-    }
+    // Remove the externalization of @mui/icons-material to fix loading issues
   },
 })
