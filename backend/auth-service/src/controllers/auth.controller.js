@@ -281,10 +281,12 @@ exports.forgotPassword = async (req, res, next) => {
 
     // Create reset URL
     // In production, this would be your frontend URL
-    const resetUrl = `${req.protocol}://${req.get('host')}/reset-password/${resetToken}`;
+    const resetUrl = `https://univento.vercel.app/reset-password/${resetToken}`;
     
     // For development, we'll also include a frontend URL for testing
-    const frontendResetUrl = `http://localhost:5173/reset-password/${resetToken}`;
+    const frontendResetUrl = process.env.NODE_ENV === 'production' 
+      ? resetUrl
+      : `http://localhost:5173/reset-password/${resetToken}`;
 
     try {
       // Send email with reset link
