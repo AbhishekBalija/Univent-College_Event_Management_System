@@ -1,7 +1,7 @@
 # Univent - College Event Management System
 
 <div align="center">
-  <img src="frontend/public/logo3.jpg" alt="Univent Logo" width="670" />
+  <img src="frontend/public/logo3.jpg" alt="Univent Logo" width="800" />
 </div>
 
 ## Overview
@@ -46,7 +46,7 @@ Univent follows a microservice architecture with four core services:
 
 1. Clone the repository
 ```bash
-git clone https://github.com/yourusername/univent.git
+git clone https://github.com/AbhishekBalija/Univent.git
 cd univent
 ```
 
