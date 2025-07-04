@@ -2,6 +2,7 @@ import axios from 'axios';
 
 // Base URL for auth service
 const API_URL = 'https://univent-auth-service.onrender.com/api/auth';
+// const API_URL = 'http://localhost:8001/api/auth';
 
 // Create axios instance with default config
 const authApi = axios.create({
@@ -106,6 +107,19 @@ const authService = {
   // Check if user is authenticated
   isAuthenticated: () => {
     return !!localStorage.getItem('token');
+  },
+
+  // Google OAuth login/signup
+  googleLogin: async (idToken, college = null) => {
+    try {
+      const response = await authApi.post('/google', { idToken, college });
+      if (response.data.token) {
+        localStorage.setItem('token', response.data.token);
+      }
+      return response.data;
+    } catch (error) {
+      throw new Error(error.response?.data?.message || 'Google login failed');
+    }
   }
 };
 

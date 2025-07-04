@@ -2,6 +2,7 @@ const User = require('../models/User');
 const { generateToken, generateRefreshToken, verifyRefreshToken } = require('../utils/jwt.utils');
 const { sendPasswordResetEmail } = require('../utils/email.utils');
 const crypto = require('crypto');
+const { OAuth2Client } = require('google-auth-library');
 
 /**
  * @desc    Register a new user
@@ -374,6 +375,75 @@ exports.resetPassword = async (req, res, next) => {
       success: true,
       message: 'Password reset successful',
       token: newToken,
+      refreshToken
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Google OAuth login/signup
+exports.googleAuth = async (req, res, next) => {
+  try {
+    const { idToken, college } = req.body;
+    if (!idToken) {
+      return res.status(400).json({ success: false, message: 'Google ID token is required' });
+    }
+
+    const client = new OAuth2Client();
+    const ticket = await client.verifyIdToken({ idToken });
+    const payload = ticket.getPayload();
+    if (!payload) {
+      return res.status(401).json({ success: false, message: 'Invalid Google token' });
+    }
+
+    const { email, given_name, family_name, picture } = payload;
+    if (!email) {
+      return res.status(400).json({ success: false, message: 'Google account must have an email' });
+    }
+
+    let user = await User.findOne({ email });
+    if (!user) {
+      // If college is not provided, ask for it
+      if (!college) {
+        return res.status(200).json({
+          success: false,
+          message: 'College is required',
+          needCollege: true,
+          googleProfile: { email, firstName: given_name, lastName: family_name, photo: picture }
+        });
+      }
+      // Create new user with a random password (not used for Google login)
+      const randomPassword = crypto.randomBytes(16).toString('hex') + 'Aa1!';
+      user = await User.create({
+        firstName: given_name,
+        lastName: family_name,
+        email,
+        password: randomPassword,
+        college
+      });
+    } else if (!user.college && college) {
+      user.college = college;
+      await user.save();
+    }
+
+    // Generate JWT token
+    const token = generateToken(user);
+    const refreshToken = generateRefreshToken(user);
+
+    res.status(200).json({
+      success: true,
+      message: 'Google login successful',
+      user: {
+        id: user._id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        college: user.college,
+        role: user.role,
+        photo: picture
+      },
+      token,
       refreshToken
     });
   } catch (error) {

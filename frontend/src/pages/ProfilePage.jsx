@@ -172,11 +172,19 @@ const ProfilePage = () => {
               <div className="flex flex-col md:flex-row">
                 <div className="md:w-1/3 mb-6 md:mb-0">
                   <div className="flex flex-col items-center">
-                    <div className="w-32 h-32 bg-gray-300 rounded-full flex items-center justify-center mb-4">
-                      <span className="text-4xl font-bold text-gray-600">
-                        {profileData.firstName.charAt(0)}{profileData.lastName.charAt(0)}
-                      </span>
-                    </div>
+                    {user.photo ? (
+                      <img 
+                        src={user.photo} 
+                        alt="Profile" 
+                        className="w-32 h-32 rounded-full object-cover mb-4"
+                      />
+                    ) : (
+                      <div className="w-32 h-32 bg-gray-300 rounded-full flex items-center justify-center mb-4">
+                        <span className="text-4xl font-bold text-gray-600">
+                          {profileData.firstName.charAt(0)}{profileData.lastName.charAt(0)}
+                        </span>
+                      </div>
+                    )}
                     <h2 className="text-xl font-semibold text-gray-800">
                       {profileData.firstName} {profileData.lastName}
                     </h2>

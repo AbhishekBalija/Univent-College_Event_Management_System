@@ -59,6 +59,24 @@ export const AuthProvider = ({ children }) => {
     authService.logout();
   };
 
+  // Google OAuth login/signup
+  const googleLogin = async (idToken, college = null) => {
+    dispatch(setReduxLoading(true));
+    dispatch(setReduxError(null));
+    try {
+      const response = await authService.googleLogin(idToken, college);
+      if (response.success && response.user) {
+        dispatch(setReduxUser(response.user));
+      }
+      return response;
+    } catch (err) {
+      dispatch(setReduxError(err.message || 'Failed to login with Google'));
+      throw err;
+    } finally {
+      dispatch(setReduxLoading(false));
+    }
+  };
+
   const value = {
     user,
     loading,
@@ -66,7 +84,8 @@ export const AuthProvider = ({ children }) => {
     login,
     register,
     logout,
-    isAuthenticated
+    isAuthenticated,
+    googleLogin
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

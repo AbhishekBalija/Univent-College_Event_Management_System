@@ -2,11 +2,16 @@ import { useState } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useAuth } from '../../context';
+import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
 
 const RegisterForm = ({ onSuccess }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const { register } = useAuth();
+  const { register, googleLogin } = useAuth();
+  const [showCollegePrompt, setShowCollegePrompt] = useState(false);
+  const [googleIdToken, setGoogleIdToken] = useState(null);
+  const [collegeInput, setCollegeInput] = useState('');
+  const [googleProfile, setGoogleProfile] = useState(null);
 
   const registerSchema = Yup.object().shape({
     firstName: Yup.string()
@@ -68,6 +73,46 @@ const RegisterForm = ({ onSuccess }) => {
       }
     },
   });
+
+  // Google signup handler
+  const handleGoogleSuccess = async (credentialResponse) => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const idToken = credentialResponse.credential;
+      const response = await googleLogin(idToken);
+      if (response.needCollege) {
+        setShowCollegePrompt(true);
+        setGoogleIdToken(idToken);
+        setGoogleProfile(response.googleProfile);
+      } else if (response.success) {
+        if (onSuccess) onSuccess();
+      }
+    } catch (err) {
+      setError(err.message || 'Google signup failed');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleCollegeSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError(null);
+    try {
+      const response = await googleLogin(googleIdToken, collegeInput);
+      if (response.success) {
+        setShowCollegePrompt(false);
+        setGoogleIdToken(null);
+        setGoogleProfile(null);
+        if (onSuccess) onSuccess();
+      }
+    } catch (err) {
+      setError(err.message || 'Google signup failed');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="w-full max-w-md mx-auto">
@@ -239,6 +284,31 @@ const RegisterForm = ({ onSuccess }) => {
           ) : 'Register'}
         </button>
       </form>
+      
+      <div className="mt-6 text-center">
+        <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
+          <GoogleLogin
+            onSuccess={handleGoogleSuccess}
+            onError={() => setError('Google signup failed')}
+            width="100%"
+          />
+        </GoogleOAuthProvider>
+      </div>
+      {showCollegePrompt && (
+        <form onSubmit={handleCollegeSubmit} className="mt-4">
+          <div className="mb-2">
+            <label className="block text-gray-700 text-sm font-bold mb-2">College/University Name</label>
+            <input
+              type="text"
+              value={collegeInput}
+              onChange={e => setCollegeInput(e.target.value)}
+              className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 border-gray-300 focus:ring-blue-200"
+              required
+            />
+          </div>
+          <button type="submit" className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 mt-2">Submit</button>
+        </form>
+      )}
       
       <div className="mt-6 text-center">
         <p className="text-sm text-gray-600">

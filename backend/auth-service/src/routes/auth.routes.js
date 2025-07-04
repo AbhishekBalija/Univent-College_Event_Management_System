@@ -7,7 +7,8 @@ const {
   logout,
   forgotPassword,
   resetPassword,
-  updateProfile
+  updateProfile,
+  googleAuth
 } = require('../controllers/auth.controller');
 const { protect } = require('../middleware/auth.middleware');
 
@@ -19,6 +20,7 @@ router.post('/login', login);
 router.post('/refresh-token', refreshToken);
 router.post('/forgot-password', forgotPassword);
 router.post('/reset-password/:token', resetPassword);
+router.post('/google', googleAuth);
 
 // Protected routes
 router.get('/me', protect, getCurrentUser);
