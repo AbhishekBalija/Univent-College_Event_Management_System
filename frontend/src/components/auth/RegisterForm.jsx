@@ -11,7 +11,10 @@ const RegisterForm = ({ onSuccess }) => {
   const [showCollegePrompt, setShowCollegePrompt] = useState(false);
   const [googleIdToken, setGoogleIdToken] = useState(null);
   const [collegeInput, setCollegeInput] = useState('');
+  // eslint-disable-next-line no-unused-vars
   const [googleProfile, setGoogleProfile] = useState(null);
+
+  const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
   const registerSchema = Yup.object().shape({
     firstName: Yup.string()
@@ -117,17 +120,23 @@ const RegisterForm = ({ onSuccess }) => {
   return (
     <div className="w-full max-w-md mx-auto">
       {/* Title moved to parent component */}
-      
+
       {error && (
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4" role="alert">
+        <div
+          className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4"
+          role="alert"
+        >
           <span className="block sm:inline">{error}</span>
         </div>
       )}
-      
+
       <form onSubmit={formik.handleSubmit}>
         <div className="grid grid-cols-2 gap-4 mb-4">
           <div>
-            <label htmlFor="firstName" className="block text-gray-700 text-sm font-bold mb-2">
+            <label
+              htmlFor="firstName"
+              className="block text-gray-700 text-sm font-bold mb-2"
+            >
               First Name
             </label>
             <input
@@ -135,19 +144,28 @@ const RegisterForm = ({ onSuccess }) => {
               type="text"
               name="firstName"
               placeholder="Enter your first name"
-              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${formik.touched.firstName && formik.errors.firstName ? 'border-red-500 focus:ring-red-200' : 'border-gray-300 focus:ring-blue-200'}`}
+              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${
+                formik.touched.firstName && formik.errors.firstName
+                  ? "border-red-500 focus:ring-red-200"
+                  : "border-gray-300 focus:ring-blue-200"
+              }`}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.firstName}
               disabled={isLoading}
             />
             {formik.touched.firstName && formik.errors.firstName && (
-              <p className="text-red-500 text-xs mt-1">{formik.errors.firstName}</p>
+              <p className="text-red-500 text-xs mt-1">
+                {formik.errors.firstName}
+              </p>
             )}
           </div>
-          
+
           <div>
-            <label htmlFor="lastName" className="block text-gray-700 text-sm font-bold mb-2">
+            <label
+              htmlFor="lastName"
+              className="block text-gray-700 text-sm font-bold mb-2"
+            >
               Last Name
             </label>
             <input
@@ -155,20 +173,29 @@ const RegisterForm = ({ onSuccess }) => {
               type="text"
               name="lastName"
               placeholder="Enter your last name"
-              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${formik.touched.lastName && formik.errors.lastName ? 'border-red-500 focus:ring-red-200' : 'border-gray-300 focus:ring-blue-200'}`}
+              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${
+                formik.touched.lastName && formik.errors.lastName
+                  ? "border-red-500 focus:ring-red-200"
+                  : "border-gray-300 focus:ring-blue-200"
+              }`}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.lastName}
               disabled={isLoading}
             />
             {formik.touched.lastName && formik.errors.lastName && (
-              <p className="text-red-500 text-xs mt-1">{formik.errors.lastName}</p>
+              <p className="text-red-500 text-xs mt-1">
+                {formik.errors.lastName}
+              </p>
             )}
           </div>
         </div>
-        
+
         <div className="mb-4">
-          <label htmlFor="email" className="block text-gray-700 text-sm font-bold mb-2">
+          <label
+            htmlFor="email"
+            className="block text-gray-700 text-sm font-bold mb-2"
+          >
             Email Address
           </label>
           <input
@@ -176,7 +203,11 @@ const RegisterForm = ({ onSuccess }) => {
             type="email"
             name="email"
             placeholder="Enter your email"
-            className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${formik.touched.email && formik.errors.email ? 'border-red-500 focus:ring-red-200' : 'border-gray-300 focus:ring-blue-200'}`}
+            className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${
+              formik.touched.email && formik.errors.email
+                ? "border-red-500 focus:ring-red-200"
+                : "border-gray-300 focus:ring-blue-200"
+            }`}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.email}
@@ -186,9 +217,12 @@ const RegisterForm = ({ onSuccess }) => {
             <p className="text-red-500 text-xs mt-1">{formik.errors.email}</p>
           )}
         </div>
-        
+
         <div className="mb-4">
-          <label htmlFor="college" className="block text-gray-700 text-sm font-bold mb-2">
+          <label
+            htmlFor="college"
+            className="block text-gray-700 text-sm font-bold mb-2"
+          >
             College/University
           </label>
           <input
@@ -196,7 +230,11 @@ const RegisterForm = ({ onSuccess }) => {
             type="text"
             name="college"
             placeholder="Enter your college or university"
-            className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${formik.touched.college && formik.errors.college ? 'border-red-500 focus:ring-red-200' : 'border-gray-300 focus:ring-blue-200'}`}
+            className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${
+              formik.touched.college && formik.errors.college
+                ? "border-red-500 focus:ring-red-200"
+                : "border-gray-300 focus:ring-blue-200"
+            }`}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.college}
@@ -206,9 +244,12 @@ const RegisterForm = ({ onSuccess }) => {
             <p className="text-red-500 text-xs mt-1">{formik.errors.college}</p>
           )}
         </div>
-        
+
         <div className="mb-4">
-          <label htmlFor="password" className="block text-gray-700 text-sm font-bold mb-2">
+          <label
+            htmlFor="password"
+            className="block text-gray-700 text-sm font-bold mb-2"
+          >
             Password
           </label>
           <input
@@ -216,19 +257,28 @@ const RegisterForm = ({ onSuccess }) => {
             type="password"
             name="password"
             placeholder="Create a password"
-            className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${formik.touched.password && formik.errors.password ? 'border-red-500 focus:ring-red-200' : 'border-gray-300 focus:ring-blue-200'}`}
+            className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${
+              formik.touched.password && formik.errors.password
+                ? "border-red-500 focus:ring-red-200"
+                : "border-gray-300 focus:ring-blue-200"
+            }`}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.password}
             disabled={isLoading}
           />
           {formik.touched.password && formik.errors.password && (
-            <p className="text-red-500 text-xs mt-1">{formik.errors.password}</p>
+            <p className="text-red-500 text-xs mt-1">
+              {formik.errors.password}
+            </p>
           )}
         </div>
-        
+
         <div className="mb-6">
-          <label htmlFor="confirmPassword" className="block text-gray-700 text-sm font-bold mb-2">
+          <label
+            htmlFor="confirmPassword"
+            className="block text-gray-700 text-sm font-bold mb-2"
+          >
             Confirm Password
           </label>
           <input
@@ -236,17 +286,23 @@ const RegisterForm = ({ onSuccess }) => {
             type="password"
             name="confirmPassword"
             placeholder="Confirm your password"
-            className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${formik.touched.confirmPassword && formik.errors.confirmPassword ? 'border-red-500 focus:ring-red-200' : 'border-gray-300 focus:ring-blue-200'}`}
+            className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${
+              formik.touched.confirmPassword && formik.errors.confirmPassword
+                ? "border-red-500 focus:ring-red-200"
+                : "border-gray-300 focus:ring-blue-200"
+            }`}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.confirmPassword}
             disabled={isLoading}
           />
           {formik.touched.confirmPassword && formik.errors.confirmPassword && (
-            <p className="text-red-500 text-xs mt-1">{formik.errors.confirmPassword}</p>
+            <p className="text-red-500 text-xs mt-1">
+              {formik.errors.confirmPassword}
+            </p>
           )}
         </div>
-        
+
         <div className="mb-6">
           <div className="flex items-center">
             <input
@@ -259,15 +315,27 @@ const RegisterForm = ({ onSuccess }) => {
               checked={formik.values.acceptTerms}
               disabled={isLoading}
             />
-            <label htmlFor="acceptTerms" className="ml-2 block text-sm text-gray-700">
-              I accept the <a href="#" className="text-yellow-300 hover:text-yellow-800">Terms and Conditions</a> and <a href="#" className="text-yellow-300 hover:text-yellow-600">Privacy Policy</a>
+            <label
+              htmlFor="acceptTerms"
+              className="ml-2 block text-sm text-gray-700"
+            >
+              I accept the{" "}
+              <a href="#" className="text-yellow-300 hover:text-yellow-800">
+                Terms and Conditions
+              </a>{" "}
+              and{" "}
+              <a href="#" className="text-yellow-300 hover:text-yellow-600">
+                Privacy Policy
+              </a>
             </label>
           </div>
           {formik.touched.acceptTerms && formik.errors.acceptTerms && (
-            <p className="text-red-500 text-xs mt-1">{formik.errors.acceptTerms}</p>
+            <p className="text-red-500 text-xs mt-1">
+              {formik.errors.acceptTerms}
+            </p>
           )}
         </div>
-        
+
         <button
           type="submit"
           className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-200 ease-in-out"
@@ -275,45 +343,74 @@ const RegisterForm = ({ onSuccess }) => {
         >
           {isLoading ? (
             <span className="flex justify-center items-center">
-              <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              <svg
+                className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                ></circle>
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                ></path>
               </svg>
               Registering...
             </span>
-          ) : 'Register'}
+          ) : (
+            "Register"
+          )}
         </button>
       </form>
-      
-      <div className="mt-6 text-center">
-        <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
+
+      <div className="flex justify-center mt-6">
+        <GoogleOAuthProvider clientId={clientId}>
           <GoogleLogin
             onSuccess={handleGoogleSuccess}
-            onError={() => setError('Google signup failed')}
-            width="100%"
+            onError={() => setError("Google login failed")}
+            useOneTap // Optional
           />
         </GoogleOAuthProvider>
       </div>
+
       {showCollegePrompt && (
         <form onSubmit={handleCollegeSubmit} className="mt-4">
           <div className="mb-2">
-            <label className="block text-gray-700 text-sm font-bold mb-2">College/University Name</label>
+            <label className="block text-gray-700 text-sm font-bold mb-2">
+              College/University Name
+            </label>
             <input
               type="text"
               value={collegeInput}
-              onChange={e => setCollegeInput(e.target.value)}
+              onChange={(e) => setCollegeInput(e.target.value)}
               className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 border-gray-300 focus:ring-blue-200"
               required
             />
           </div>
-          <button type="submit" className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 mt-2">Submit</button>
+          <button
+            type="submit"
+            className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 mt-2"
+          >
+            Submit
+          </button>
         </form>
       )}
-      
+
       <div className="mt-6 text-center">
         <p className="text-sm text-gray-600">
-          Already have an account?{' '}
-          <a href="/login" className="text-blue-600 hover:text-blue-800 font-medium">
+          Already have an account?{" "}
+          <a
+            href="/login"
+            className="text-blue-600 hover:text-blue-800 font-medium"
+          >
             Login here
           </a>
         </p>
