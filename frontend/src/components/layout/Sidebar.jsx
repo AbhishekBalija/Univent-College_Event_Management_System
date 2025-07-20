@@ -133,24 +133,10 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
           isOpen ? 'translate-x-0' : '-translate-x-full'
         } md:translate-x-0 md:static md:z-0 md:shadow-none`}
       >
-        {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-gray-100">
-          <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center shadow-md">
-              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-              </svg>
-            </div>
-            <div>
-              <h2 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
-                Univent
-              </h2>
-              <p className="text-xs text-gray-500 -mt-1">College Events</p>
-            </div>
-          </div>
-          
+        {/* Sidebar Header */}
+        <div className="flex items-center justify-end p-4 border-b border-gray-100 md:hidden">
           <button 
-            className="text-gray-500 hover:text-gray-700 md:hidden p-2 rounded-lg hover:bg-gray-100 transition duration-200" 
+            className="text-gray-500 hover:text-gray-700 p-2 rounded-lg hover:bg-gray-100 transition duration-200"
             onClick={toggleSidebar}
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">

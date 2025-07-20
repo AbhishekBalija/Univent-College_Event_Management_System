@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { eventService } from '../services';
 import EventCard from '../components/events/EventCard';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../context/useAuth';
 import { PageLoader, SkeletonCard } from '../components/common';
 
 const EventsPage = () => {
