@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { eventService } from '../services';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../context/useAuth';
 import EventRegistrationForm from '../components/events/EventRegistrationForm';
 import EventAnnouncements from '../components/events/EventAnnouncements';
 

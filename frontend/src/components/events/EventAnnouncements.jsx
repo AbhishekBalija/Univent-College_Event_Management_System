@@ -31,7 +31,7 @@ import {
   Delete as DeleteIcon
 } from '@mui/icons-material';
 import { formatDistanceToNow } from 'date-fns';
-import { useAuth } from '../../context/AuthContext';
+import { useAuth } from '../../context/useAuth';
 
 const priorityColors = {
   low: 'info',
