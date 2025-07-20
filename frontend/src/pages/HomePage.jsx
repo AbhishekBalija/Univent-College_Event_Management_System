@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../context';
 import { eventService, announcementService, leaderboardService } from '../services';
 import { RealtimeAnnouncements } from '../components/announcements';
+import { PageLoader, SkeletonCard, SkeletonTable, SkeletonText } from '../components/common';
 
 const HomePage = () => {
   const { user } = useAuth();
