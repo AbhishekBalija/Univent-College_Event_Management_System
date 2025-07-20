@@ -42,7 +42,7 @@ const Layout = ({ children }) => {
         </div>
 
         <main className="flex-1 overflow-y-auto h-full flex-grow">
-          <div>
+          <div className="min-h-full">
             {children || <Outlet />}
           </div>
         </main>

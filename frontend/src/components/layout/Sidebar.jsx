@@ -146,7 +146,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
         </div>
         
         {/* Navigation */}
-        <nav className="flex-1 p-4 space-y-1">
+        <nav className="flex-1 space-y-1">
           {/* Main Navigation */}
           <div className="mb-8">
             <h3 className="px-3 mb-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">
