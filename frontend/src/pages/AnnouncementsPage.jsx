@@ -1,28 +1,20 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/useAuth';
 import { AnnouncementList } from '../components/announcements';
-import {
-  Container,
-  Typography,
-  Box,
-  Button,
-  Paper,
-  Tabs,
-  Tab,
-  Divider,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  Grid,
-  Stack,
-  Chip
-} from '@mui/material';
-import {
-  Add as AddIcon,
-  FilterList as FilterListIcon
-} from '@mui/icons-material';
+
+const TabButton = ({ children, isActive, onClick }) => (
+  <button
+    onClick={onClick}
+    className={`px-6 py-3 text-lg font-semibold rounded-t-lg transition-colors duration-200 focus:outline-none ${
+      isActive
+        ? 'bg-white text-blue-600 border-b-2 border-blue-600'
+        : 'text-gray-500 hover:text-gray-700'
+    }`}
+  >
+    {children}
+  </button>
+);
 
 const AnnouncementsPage = () => {
   const { user } = useAuth();
@@ -35,7 +27,6 @@ const AnnouncementsPage = () => {
   const isOrganizer = user?.role === 'organizer';
   const canCreateAnnouncement = isAdmin || isOrganizer;
 
-  const handleTabChange = (event, newValue) => setTabValue(newValue);
   const handleCreateAnnouncement = () => navigate('/announcements/create');
 
   const getFilterParams = () => {
@@ -48,107 +39,83 @@ const AnnouncementsPage = () => {
   };
 
   return (
-    <Container maxWidth="lg" sx={{ mt: 4, mb: 8 }}>
-      <Paper elevation={4} sx={{ p: { xs: 2, md: 4 }, borderRadius: 3 }}>
-        <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
-          <Typography variant="h4" fontWeight={600}>
-            📢 Announcements
-          </Typography>
+    <div className="min-h-screen bg-gray-50 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center mb-8 border-b pb-4">
+          <div>
+            <h1 className="text-4xl font-extrabold text-gray-900">Announcements</h1>
+            <p className="mt-2 text-lg text-gray-600">Stay updated with the latest news and announcements.</p>
+          </div>
           {canCreateAnnouncement && (
-            <Button
-              variant="contained"
-              size="large"
-              startIcon={<AddIcon />}
+            <button
               onClick={handleCreateAnnouncement}
-              sx={{ textTransform: 'none', borderRadius: 2 }}
+              className="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition duration-200 font-semibold shadow-sm hover:shadow-md group"
             >
-              Create
-            </Button>
+              <svg className="w-5 h-5 mr-2 group-hover:scale-110 transition duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4"></path>
+              </svg>
+              Create Announcement
+            </button>
           )}
-        </Box>
+        </div>
 
-        <Tabs
-          value={tabValue}
-          onChange={handleTabChange}
-          indicatorColor="primary"
-          textColor="primary"
-          variant="scrollable"
-          scrollButtons
-          allowScrollButtonsMobile
-          sx={{
-            mb: 3,
-            borderRadius: 2,
-            backgroundColor: '#f7f9fc'
-          }}
-        >
-          <Tab label="All Announcements" />
-          <Tab label="General Announcements" />
-          <Tab label="Event Announcements" />
-        </Tabs>
+        <div className="bg-white rounded-2xl shadow-lg">
+          <div className="border-b border-gray-200">
+            <nav className="-mb-px flex space-x-4 px-6" aria-label="Tabs">
+              <TabButton isActive={tabValue === 0} onClick={() => setTabValue(0)}>
+                All Announcements
+              </TabButton>
+              <TabButton isActive={tabValue === 1} onClick={() => setTabValue(1)}>
+                General
+              </TabButton>
+              <TabButton isActive={tabValue === 2} onClick={() => setTabValue(2)}>
+                Event Specific
+              </TabButton>
+            </nav>
+          </div>
 
-        {/* Filters */}
-        <Paper
-          elevation={1}
-          sx={{
-            backgroundColor: '#f0f4f9',
-            p: 2,
-            mb: 4,
-            borderRadius: 2
-          }}
-        >
-          <Stack direction="row" spacing={3} alignItems="center" flexWrap="wrap">
-            <Chip
-              icon={<FilterListIcon />}
-              label="Filters"
-              color="default"
-              sx={{ fontWeight: 500, backgroundColor: '#e0e7ff' }}
-            />
-
-            <FormControl size="small" sx={{ minWidth: 160 }}>
-              <InputLabel>Priority</InputLabel>
-              <Select
+          <div className="p-6">
+            <div className="mb-6 flex items-center space-x-4">
+              <span className="font-semibold text-gray-700">Filter by:</span>
+              <select
                 value={priorityFilter}
                 onChange={(e) => setPriorityFilter(e.target.value)}
-                label="Priority"
+                className="border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
               >
-                <MenuItem value="all">All Priorities</MenuItem>
-                <MenuItem value="low">Low</MenuItem>
-                <MenuItem value="medium">Medium</MenuItem>
-                <MenuItem value="high">High</MenuItem>
-              </Select>
-            </FormControl>
+                <option value="all">All Priorities</option>
+                <option value="low">Low</option>
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
+              </select>
 
-            {(isAdmin || isOrganizer) && (
-              <FormControl size="small" sx={{ minWidth: 160 }}>
-                <InputLabel>Status</InputLabel>
-                <Select
+              {(isAdmin || isOrganizer) && (
+                <select
                   value={publishedFilter}
                   onChange={(e) => setPublishedFilter(e.target.value)}
-                  label="Status"
+                  className="border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                 >
-                  <MenuItem value="all">All Statuses</MenuItem>
-                  <MenuItem value="published">Published</MenuItem>
-                  <MenuItem value="unpublished">Unpublished</MenuItem>
-                </Select>
-              </FormControl>
-            )}
-          </Stack>
-        </Paper>
+                  <option value="all">All Statuses</option>
+                  <option value="published">Published</option>
+                  <option value="unpublished">Unpublished</option>
+                </select>
+              )}
+            </div>
 
-        {/* Announcement List */}
-        <Box mt={1}>
-          {tabValue === 0 && (
-            <AnnouncementList showControls filters={getFilterParams()} />
-          )}
-          {tabValue === 1 && (
-            <AnnouncementList showControls filters={{ ...getFilterParams(), eventId: null }} />
-          )}
-          {tabValue === 2 && (
-            <AnnouncementList showControls filters={{ ...getFilterParams(), hasEvent: true }} />
-          )}
-        </Box>
-      </Paper>
-    </Container>
+            <div>
+              {tabValue === 0 && (
+                <AnnouncementList showControls filters={getFilterParams()} />
+              )}
+              {tabValue === 1 && (
+                <AnnouncementList showControls filters={{ ...getFilterParams(), eventId: null }} />
+              )}
+              {tabValue === 2 && (
+                <AnnouncementList showControls filters={{ ...getFilterParams(), hasEvent: true }} />
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 

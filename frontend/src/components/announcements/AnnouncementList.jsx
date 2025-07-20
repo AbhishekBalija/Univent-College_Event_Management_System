@@ -36,7 +36,7 @@ const priorityColors = {
   high: 'error'
 };
 
-const AnnouncementList = ({ eventId, showControls = false }) => {
+const AnnouncementList = ({ filters, showControls = false }) => {
   const [announcements, setAnnouncements] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -52,18 +52,13 @@ const AnnouncementList = ({ eventId, showControls = false }) => {
   useEffect(() => {
     fetchAnnouncements();
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [eventId]);
+  }, [filters]);
 
   const fetchAnnouncements = async () => {
     setLoading(true);
     setError(null);
     try {
-      let response;
-      if (eventId) {
-        response = await announcementService.getAnnouncementsByEvent(eventId);
-      } else {
-        response = await announcementService.getAllAnnouncements();
-      }
+      const response = await announcementService.getAllAnnouncements(filters);
       setAnnouncements(response.data);
     } catch (err) {
       setError(err.message || 'Failed to fetch announcements');

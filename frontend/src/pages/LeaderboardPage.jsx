@@ -63,8 +63,8 @@ const LeaderboardPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="min-h-screen bg-gray-50 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Breadcrumbs */}
         <div className="mb-6 text-sm text-gray-500">
           <Link to="/home" className="hover:text-blue-600">Home</Link>
@@ -77,16 +77,16 @@ const LeaderboardPage = () => {
                 {event?.title || 'Event'}
               </Link>
               <span className="mx-2">/</span>
-              <span className="text-gray-800">Leaderboard</span>
+              <span className="text-gray-800 font-semibold">Leaderboard</span>
             </>
           ) : (
-            <span className="text-gray-800">Leaderboards</span>
+            <span className="text-gray-800 font-semibold">Leaderboards</span>
           )}
         </div>
 
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-gray-900">
+        <div className="mb-8 border-b pb-4">
+          <h1 className="text-4xl font-extrabold text-gray-900">
             {eventId ? `${event?.title || 'Event'} Leaderboard` : 'Leaderboards'}
           </h1>
           {eventId && event && (
@@ -107,17 +107,23 @@ const LeaderboardPage = () => {
           !loading && event && (
             <div className="space-y-8">
               {isAuthenticated && isUserRegistered() && (
-                <ParticipantScore eventId={eventId} />
+                <div className="bg-white p-6 rounded-2xl shadow-lg">
+                  <ParticipantScore eventId={eventId} />
+                </div>
               )}
 
               {isAuthenticated && user && (user.role === 'admin' || user.role === 'organizer') && (
-                <UpdateScoreForm 
-                  eventId={eventId} 
-                  onScoreUpdated={() => window.location.reload()}
-                />
+                <div className="bg-white p-6 rounded-2xl shadow-lg">
+                  <UpdateScoreForm
+                    eventId={eventId}
+                    onScoreUpdated={() => window.location.reload()}
+                  />
+                </div>
               )}
 
-              <LeaderboardTable eventId={eventId} />
+              <div className="bg-white p-6 rounded-2xl shadow-lg">
+                <LeaderboardTable eventId={eventId} />
+              </div>
             </div>
           )
         ) : (

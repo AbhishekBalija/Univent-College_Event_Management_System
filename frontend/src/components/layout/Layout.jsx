@@ -41,8 +41,8 @@ const Layout = ({ children }) => {
           <Sidebar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
         </div>
 
-        <main className="flex-1 overflow-y-auto h-full">
-          <div className="min-h-full">
+        <main className="flex-1 overflow-y-auto h-full flex-grow">
+          <div>
             {children || <Outlet />}
           </div>
         </main>
