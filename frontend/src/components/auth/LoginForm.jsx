@@ -4,6 +4,7 @@ import * as Yup from 'yup';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context';
 import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
+import { LoadingSpinner } from '../common';
 
 const LoginForm = ({ onSuccess }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -88,50 +89,60 @@ const LoginForm = ({ onSuccess }) => {
   };
 
   return (
-    <div className="w-full max-w-md mx-auto">
+    <div className="w-full">
       {showCollegePrompt ? (
-        <form onSubmit={handleCollegeSubmit} className="p-2 rounded-lg">
-          <h2 className="text-xl font-semibold text-gray-800 mb-4 text-center">
-            Enter your college name to continue
-          </h2>
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+        <form onSubmit={handleCollegeSubmit} className="space-y-6">
+          <div className="text-center">
+            <h2 className="text-xl font-semibold text-white mb-2">
+              Enter your college name
+            </h2>
+            <p className="text-white/70 text-sm">
+              Complete your Google sign-in by providing your college information
+            </p>
+          </div>
+          
+          <div>
+            <label className="block text-sm font-medium text-white/90 mb-2">
               College/University Name
             </label>
             <input
               type="text"
               value={collegeInput}
               onChange={(e) => setCollegeInput(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Enter college name"
+              className="w-full px-4 py-3 bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/30 focus:border-transparent transition duration-200"
+              placeholder="Enter your college name"
               required
             />
           </div>
+          
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition duration-200"
+            className="w-full bg-white text-blue-600 py-3 px-4 rounded-xl font-semibold hover:bg-white/90 focus:outline-none focus:ring-2 focus:ring-white/30 transition duration-200 flex items-center justify-center"
             disabled={isLoading}
           >
-            {isLoading ? "Submitting..." : "Continue"}
+            {isLoading ? (
+              <LoadingSpinner size="sm" color="primary" />
+            ) : (
+              "Continue"
+            )}
           </button>
         </form>
       ) : (
-        <>
+        <div className="space-y-6">
           {error && (
-            <div
-              className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4"
-              role="alert"
-            >
-              <span className="block sm:inline">{error}</span>
+            <div className="bg-red-500/10 backdrop-blur-sm border border-red-300/30 text-red-100 px-4 py-3 rounded-xl text-sm">
+              <div className="flex items-center">
+                <svg className="w-5 h-5 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <span>{error}</span>
+              </div>
             </div>
           )}
 
-          <form onSubmit={formik.handleSubmit}>
-            <div className="mb-4">
-              <label
-                htmlFor="email"
-                className="block text-gray-700 text-sm font-bold mb-2"
-              >
+          <form onSubmit={formik.handleSubmit} className="space-y-5">
+            <div>
+              <label htmlFor="email" className="block text-sm font-medium text-white/90 mb-2">
                 Email Address
               </label>
               <input
@@ -139,10 +150,10 @@ const LoginForm = ({ onSuccess }) => {
                 type="email"
                 name="email"
                 placeholder="Enter your email"
-                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${
+                className={`w-full px-4 py-3 bg-white/10 backdrop-blur-sm border rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 transition duration-200 ${
                   formik.touched.email && formik.errors.email
-                    ? "border-red-500 focus:ring-red-200"
-                    : "border-gray-300 focus:ring-blue-200"
+                    ? "border-red-300/50 focus:ring-red-300/30"
+                    : "border-white/20 focus:ring-white/30 focus:border-transparent"
                 }`}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
@@ -150,17 +161,14 @@ const LoginForm = ({ onSuccess }) => {
                 disabled={isLoading}
               />
               {formik.touched.email && formik.errors.email && (
-                <p className="text-red-500 text-xs mt-1">
+                <p className="text-red-300 text-xs mt-1 ml-1">
                   {formik.errors.email}
                 </p>
               )}
             </div>
 
-            <div className="mb-6">
-              <label
-                htmlFor="password"
-                className="block text-gray-700 text-sm font-bold mb-2"
-              >
+            <div>
+              <label htmlFor="password" className="block text-sm font-medium text-white/90 mb-2">
                 Password
               </label>
               <input
@@ -168,10 +176,10 @@ const LoginForm = ({ onSuccess }) => {
                 type="password"
                 name="password"
                 placeholder="Enter your password"
-                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${
+                className={`w-full px-4 py-3 bg-white/10 backdrop-blur-sm border rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 transition duration-200 ${
                   formik.touched.password && formik.errors.password
-                    ? "border-red-500 focus:ring-red-200"
-                    : "border-gray-300 focus:ring-blue-200"
+                    ? "border-red-300/50 focus:ring-red-300/30"
+                    : "border-white/20 focus:ring-white/30 focus:border-transparent"
                 }`}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
@@ -179,94 +187,72 @@ const LoginForm = ({ onSuccess }) => {
                 disabled={isLoading}
               />
               {formik.touched.password && formik.errors.password && (
-                <p className="text-red-500 text-xs mt-1">
+                <p className="text-red-300 text-xs mt-1 ml-1">
                   {formik.errors.password}
                 </p>
               )}
             </div>
 
-            <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center justify-between text-sm">
               <div className="flex items-center">
                 <input
                   id="remember"
                   type="checkbox"
-                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 bg-white/10 border-white/20 rounded"
                 />
-                <label
-                  htmlFor="remember"
-                  className="ml-2 block text-sm text-black"
-                >
+                <label htmlFor="remember" className="ml-2 text-white/80">
                   Remember me
                 </label>
               </div>
 
-              <div className="text-sm">
-                <Link
-                  to="/forgot-password"
-                  className="text-black hover:text-blue-300"
-                >
-                  Forgot password?
-                </Link>
-              </div>
+              <Link
+                to="/forgot-password"
+                className="text-white/80 hover:text-white transition duration-200 underline underline-offset-2"
+              >
+                Forgot password?
+              </Link>
             </div>
 
             <button
               type="submit"
-              className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-200 ease-in-out"
+              className="w-full bg-white text-blue-600 py-3 px-4 rounded-xl font-semibold hover:bg-white/90 focus:outline-none focus:ring-2 focus:ring-white/30 transition duration-200 flex items-center justify-center min-h-[48px]"
               disabled={isLoading}
             >
               {isLoading ? (
-                <span className="flex justify-center items-center">
-                  <svg
-                    className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                  >
-                    <circle
-                      className="opacity-25"
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      strokeWidth="4"
-                    ></circle>
-                    <path
-                      className="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                    ></path>
-                  </svg>
-                  Logging in...
-                </span>
+                <div className="flex items-center">
+                  <LoadingSpinner size="sm" color="primary" />
+                  <span className="ml-2">Signing in...</span>
+                </div>
               ) : (
-                "Login"
+                "Sign In"
               )}
             </button>
           </form>
 
-          <div className="flex justify-center mt-6">
-            <GoogleOAuthProvider clientId={clientId}>
-              <GoogleLogin
-                onSuccess={handleGoogleSuccess}
-                onError={() => setError("Google login failed")}
-               
-              />
-            </GoogleOAuthProvider>
+          {/* Divider */}
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-white/20"></div>
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className="px-4 bg-transparent text-white/70">Or continue with</span>
+            </div>
           </div>
 
-          <div className="mt-6 text-center">
-            <p className="text-sm text-black">
-              Don't have an account?{" "}
-              <a
-                href="/register"
-                className="text-blue-300 hover:text-blue-600 font-medium"
-              >
-                Register here
-              </a>
-            </p>
+          {/* Google Login */}
+          <div className="flex justify-center">
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-2">
+              <GoogleOAuthProvider clientId={clientId}>
+                <GoogleLogin
+                  onSuccess={handleGoogleSuccess}
+                  onError={() => setError("Google login failed")}
+                  theme="filled_black"
+                  shape="pill"
+                />
+              </GoogleOAuthProvider>
+            </div>
           </div>
-        </>
+        </div>
       )}
     </div>
   );
