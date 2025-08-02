@@ -1,5 +1,4 @@
-# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
+# .github/workflows/nodejs.yml
 
 name: Node.js CI
 
@@ -11,7 +10,6 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     strategy:
@@ -19,13 +17,25 @@ jobs:
         node-version: [18.x, 20.x, 22.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
+    defaults:
+      run:
+        working-directory: frontend  # 👈 Applies to all run steps
+
     steps:
     - uses: actions/checkout@v4
+
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - run: cd frontend && npm ci
-    - run: cd frontend && npm run build --if-present
-    - run: cd frontend && npm test
+        cache-dependency-path: frontend/package-lock.json  # 👈 Explicit path to the lock file
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Build project
+      run: npm run build --if-present
+
+    - name: Run tests
+      run: npm test
