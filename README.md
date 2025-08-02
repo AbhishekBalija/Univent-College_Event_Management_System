@@ -1,218 +1,156 @@
-# Univent - College Event Management System
+# Univent - Real-Time College Event Management System (MERN Stack)
 
 <div align="center">
-  <img src="frontend/public/logo3.jpg" alt="Univent Logo" width="800" />
+  <img src="frontend/public/logo3.jpg" alt="Univent - College Event Management System Logo" width="800" />
 </div>
 
-## Overview
-Univent is a real-time event management platform designed specifically for college environments. It enables seamless organization and participation in college events, featuring live updates and interactive leaderboards.
+<p align="center">
+  <a href="https://github.com/AbhishekBalija/Univent/blob/main/LICENSE"><img src="https://img.shields.io/github/license/AbhishekBalija/Univent?style=for-the-badge" alt="License"></a>
+  <a href="#"><img src="https://img.shields.io/badge/status-active-success.svg?style=for-the-badge" alt="Status"></a>
+  <a href="#"><img src="https://img.shields.io/github/last-commit/AbhishekBalija/Univent?style=for-the-badge" alt="Last Commit"></a>
+</p>
 
-## Key Features
-- 🎫 Event Management & Registration
-- 📢 Real-time Announcements
-- 🏆 Live Leaderboard Updates
-- 👥 Role-based Access Control
-- 📱 Real-time Notifications
-- 📊 Event Analytics
+## 🚀 Overview
+Univent is a comprehensive, real-time event management platform designed specifically for the dynamic environment of colleges and universities. Built on the **MERN stack (MongoDB, Express.js, React.js, Node.js)** with a **microservice architecture**, it provides a centralized system for organizing and participating in college fests, workshops, and technical events. The platform features live announcements and interactive leaderboards to boost engagement and streamline communication between organizers and participants.
+
+This open-source project is a perfect example of a full-stack web application using modern technologies like **Socket.IO for real-time communication** and **JWT for secure authentication**.
+
+## ✨ Key Features
+Univent is packed with features to create a seamless event experience:
+
+- 🎫 **Full Event Lifecycle Management**: Create, update, delete, and manage events.
+- 📝 **Easy Participant Registration**: Simple, one-click event registration for students.
+- 📢 **Real-time Announcements**: Push live updates and announcements to all users instantly.
+- 🏆 **Live Gamified Leaderboards**: Dynamic leaderboards that update scores in real-time to foster competition.
+- 👥 **Role-based Access Control (RBAC)**: Distinct roles for Admins, Organizers, and Participants with specific permissions.
+- 📱 **Instant Notifications**: Real-time notifications for event registrations, updates, and more.
+- 📊 **Event Analytics Dashboard**: Organizers can view registration statistics and engagement metrics.
 
 <div align="center">
-  <img src="frontend/public/univent-readme-images/event-page.png" alt="Event Management" width="600" />
-  <p><em>Event Management Interface</em></p>
+  <img src="frontend/public/univent-readme-images/event-page.png" alt="Screenshot of the main event management page in Univent" width="600" />
+  <p><em>Event Management Interface for College Fests</em></p>
 </div>
 
-## Technology Stack
-- **Frontend**: React.js with TailwindCSS
-- **Backend**: Node.js with Express.js
-- **Database**: MongoDB
-- **Real-time Communication**: Socket.IO
-- **Authentication**: JWT-based
+## 🛠️ Technology Stack
+This project uses a modern and scalable technology stack:
 
-## Architecture
-Univent follows a microservice architecture with four core services:
+- **Frontend**: **React.js** with **TailwindCSS** for a responsive and beautiful UI.
+- **Backend**: **Node.js** with **Express.js** for building robust APIs.
+- **Database**: **MongoDB** with Mongoose for flexible, schema-based data storage.
+- **Real-time Communication**: **Socket.IO** for WebSocket-based live updates.
+- **Authentication**: **JWT (JSON Web Tokens)** for secure, stateless authentication.
+- **Containerization**: **Docker** and Docker Compose for easy setup and deployment.
 
-- **Authentication Service**: User management and authentication
-- **Event Service**: Event creation and management
-- **Notification Service**: Real-time announcements
-- **Leaderboard Service**: Participant scoring and rankings
+## 🏛️ System Architecture
+Univent is designed using a **microservice architecture** to ensure scalability, maintainability, and independent deployment of services. An **API Gateway** acts as a single entry point for all client requests, routing them to the appropriate downstream service.
 
-## Getting Started
+- **Authentication Service**: Manages user registration, login, and JWT token generation.
+- **Event Service**: Handles all CRUD operations for events and manages participant registrations.
+- **Notification Service**: Powers real-time announcements and user notifications via Socket.IO.
+- **Leaderboard Service**: Manages participant scoring, ranking calculations, and live leaderboard updates.
+
+## 🏁 Getting Started
 
 ### Prerequisites
 - Node.js (v14 or higher)
 - MongoDB (v4.4 or higher)
 - npm or yarn
+- Docker (optional, for containerized setup)
 
-### Installation
+### Installation Guide
 
-1. Clone the repository
-```bash
-git clone https://github.com/AbhishekBalija/Univent.git
-cd univent
-```
+1.  **Clone the repository:**
+    ```bash
+    git clone [https://github.com/AbhishekBalija/Univent.git](https://github.com/AbhishekBalija/Univent.git)
+    cd univent
+    ```
 
-2. Install dependencies
-```bash
-# Install frontend dependencies
-cd frontend
-npm install
+2.  **Install server and client dependencies:**
+    ```bash
+    # Install frontend dependencies
+    cd frontend
+    npm install
 
-# Install backend dependencies
-cd ../backend
-cd auth-service && npm install
-cd ../event-service && npm install
-cd ../notification-service && npm install
-cd ../leaderboard-service && npm install
-```
+    # Install backend dependencies for each microservice
+    cd ../backend
+    cd auth-service && npm install
+    cd ../event-service && npm install
+    cd ../notification-service && npm install
+    cd ../leaderboard-service && npm install
+    ```
 
-3. Environment Setup
-```bash
-# Create .env files in each service directory
-# Example for auth-service:
-MONGODB_URI=mongodb://localhost:27017/univent
-JWT_SECRET=your_jwt_secret
-PORT=8001
-```
+3.  **Environment Variables Setup:**
+    Create a `.env` file in each service's root directory (`auth-service`, `event-service`, etc.) and add the required environment variables.
+    ```bash
+    # Example for auth-service/.env:
+    MONGODB_URI=mongodb://localhost:27017/univent
+    JWT_SECRET=your_super_secret_jwt_key
+    PORT=8001
+    ```
 
-4. Start the services
-```bash
-# Start all services using Docker
-docker-compose up
+4.  **Run the Application:**
+    ```bash
+    # Option 1: Start all services using Docker (Recommended)
+    docker-compose up
 
-# Or start services individually
-cd auth-service && npm run dev
-cd event-service && npm run dev
-cd notification-service && npm run dev
-cd leaderboard-service && npm run dev
-cd frontend && npm start
-```
+    # Option 2: Start each service and the frontend individually
+    # Terminal 1: Auth Service
+    cd backend/auth-service && npm run dev
+    # Terminal 2: Event Service
+    cd backend/event-service && npm run dev
+    # ...and so on for other services
 
-## User Roles
+    # Terminal 5: Frontend
+    cd frontend && npm start
+    ```
 
-| Role | Access Level |
-|------|-------------|
-| Admin | Full system access, user management |
-| Organizer | Event creation and management |
-| Participant | Event registration and participation |
+## 👤 User Roles and Permissions
 
-<div align="center">
-  <table>
-    <tr>
-      <td align="center">
-        <img src="frontend/public/univent-readme-images/admin-dashboard.png" alt="Admin Dashboard" width="250" /><br>
-        <em>Admin Dashboard</em>
-      </td>
-      <td align="center">
-        <img src="frontend/public/univent-readme-images/organizer-dashboard.png" alt="Organizer Dashboard" width="250" /><br>
-        <em>Organizer Dashboard</em>
-      </td>
-      <td align="center">
-        <img src="frontend/public/univent-readme-images/participant-home.png" alt="Participant View" width="250" /><br>
-        <em>Participant Home</em>
-      </td>
-    </tr>
-  </table>
-</div>
-
-## API Services
-
-### Authentication Service (Port: 8001)
-- User registration and login
-- JWT token management
-- Role-based access control
+| Role | Access Level | Responsibilities |
+|:--- |:--- |:--- |
+| **Admin** | Full system access | Manages users, roles, and system-wide settings. |
+| **Organizer** | Event-level access | Creates and manages their own events, tracks participants, makes announcements. |
+| **Participant** | Basic access | Registers for events, views leaderboard, receives notifications. |
 
 <div align="center">
-  <img src="frontend/public/univent-readme-images/login-page.png" alt="Authentication" width="400" />
-  <p><em>User Authentication Interface</em></p>
+  <table>
+    <tr>
+      <td align="center">
+        <img src="frontend/public/univent-readme-images/admin-dashboard.png" alt="Admin Dashboard for User Management" width="250" /><br>
+        <em>Admin Dashboard</em>
+      </td>
+      <td align="center">
+        <img src="frontend/public/univent-readme-images/organizer-dashboard.png" alt="Organizer Dashboard for Event Management" width="250" /><br>
+        <em>Organizer Dashboard</em>
+      </td>
+      <td align="center">
+        <img src="frontend/public/univent-readme-images/participant-home.png" alt="Participant Home Page showing available events" width="250" /><br>
+        <em>Participant Home</em>
+      </td>
+    </tr>
+  </table>
 </div>
 
-### Event Service (Port: 8002)
-- Event CRUD operations
-- Registration management
-- Participant tracking
+## 📂 Project Structure
+The repository is organized into a `frontend` directory for the React client and a `backend` directory containing the microservices.
 
-<div align="center">
-  <img src="frontend/public/univent-readme-images/organizer-eventpage.png" alt="Event Management" width="400" />
-  <p><em>Event Management Interface</em></p>
-</div>
-
-### Notification Service (Port: 8003)
-- Real-time announcements
-- Event updates
-- System notifications
-
-<div align="center">
-  <img src="frontend/public/univent-readme-images/announcement-page.png" alt="Announcements" width="400" />
-  <p><em>Announcements Interface</em></p>
-</div>
-
-### Leaderboard Service (Port: 8004)
-- Score tracking
-- Ranking calculations
-- Achievement management
-
-<div align="center">
-  <img src="frontend/public/univent-readme-images/leaderboard-page.png" alt="Leaderboard" width="400" />
-  <p><em>Leaderboard Interface</em></p>
-</div>
-
-## Real-time Features
-The platform uses Socket.IO for real-time updates including:
-- Live announcements
-- Event status changes
-- Leaderboard updates
-- Registration notifications
-
-## User Settings & Profile
-
-<div align="center">
-  <table>
-    <tr>
-      <td align="center">
-        <img src="frontend/public/univent-readme-images/userprofile-page.png" alt="User Profile" width="250" /><br>
-        <em>User Profile</em>
-      </td>
-      <td align="center">
-        <img src="frontend/public/univent-readme-images/usersettings-page.png" alt="User Settings" width="250" /><br>
-        <em>User Settings</em>
-      </td>
-    </tr>
-  </table>
-</div>
-
-## System Administration
-
-<div align="center">
-  <table>
-    <tr>
-      <td align="center">
-        <img src="frontend/public/univent-readme-images/admin-usermanagement.png" alt="User Management" width="250" /><br>
-        <em>User Management</em>
-      </td>
-      <td align="center">
-        <img src="frontend/public/univent-readme-images/sys-settings.png" alt="System Settings" width="250" /><br>
-        <em>System Settings</em>
-      </td>
-    </tr>
-  </table>
-</div>
-
-## Project Structure
 ```
 univent/
-├── frontend/                 # React frontend
+├── frontend/             # React.js client application
 │   ├── src/
-│   │   ├── components/      # Reusable components
-│   │   ├── pages/          # Page components
-│   │   ├── services/       # API services
-│   │   └── context/        # React context
+│   ├── components/       # Reusable React components
+│   ├── pages/            # Page-level components
+│   └── services/         # API service functions
 │
 ├── backend/
-│   ├── auth-service/       # Authentication
-│   ├── event-service/      # Event management
-│   ├── notification-service/ # Real-time notifications
-│   ├── leaderboard-service/ # Scoring system
-│   └── gateway/           # API Gateway
+│   ├── auth-service/     # Handles user authentication & roles
+│   ├── event-service/    # Handles event CRUD and registration
+│   ├── notification-service/ # Real-time notifications via Socket.IO
+│   ├── leaderboard-service/  # Manages scoring and ranking
+│   └── gateway/          # API Gateway (e.g., Express Gateway)
+│
+└── docker-compose.yml    # Docker configuration for all services
 ```
 
-## License
-This project is licensed under the MIT License - see the LICENSE file for details.
+## 📜 License
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
