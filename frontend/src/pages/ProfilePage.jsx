@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context';
 import { authService } from '../services';
+import { PageLoader } from '../components/common';
 
 const ProfilePage = () => {
   const { user } = useAuth();
@@ -18,14 +19,12 @@ const ProfilePage = () => {
   });
   const [updateSuccess, setUpdateSuccess] = useState(false);
 
-  // Redirect if user is not logged in
   useEffect(() => {
     if (!user) {
       navigate('/login');
     }
   }, [user, navigate]);
 
-  // Fetch user profile data
   useEffect(() => {
     const fetchProfileData = async () => {
       if (!user) return;
@@ -51,7 +50,6 @@ const ProfilePage = () => {
     fetchProfileData();
   }, [user]);
 
-  // Handle form input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -60,144 +58,133 @@ const ProfilePage = () => {
     });
   };
 
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Call the updateProfile endpoint
       const response = await authService.updateProfile(formData);
-      
-      // Update local profile data with the response
       setProfileData(response.user);
       setUpdateSuccess(true);
       setIsEditing(false);
-      
-      // Clear success message after 3 seconds
       setTimeout(() => {
         setUpdateSuccess(false);
       }, 3000);
     } catch (error) {
       setError(error.message || 'Failed to update profile');
-      // Clear error message after 3 seconds
       setTimeout(() => {
         setError(null);
       }, 3000);
     }
   };
 
-  // Render role-specific information
   const renderRoleSpecificInfo = () => {
     if (!profileData) return null;
 
-    switch (profileData.role) {
-      case 'admin':
-        return (
-          <div className="mt-6 p-4 bg-purple-50 rounded-lg border border-purple-200">
-            <h3 className="text-lg font-semibold text-purple-800 mb-2">Admin Information</h3>
-            <p className="text-purple-700 mb-2">As an admin, you have full access to manage the platform.</p>
-            <ul className="list-disc list-inside text-purple-600 ml-2">
-              <li>Manage all users and their roles</li>
-              <li>Approve or reject events</li>
-              <li>Access platform analytics</li>
-              <li>Configure system settings</li>
-            </ul>
-          </div>
-        );
-      case 'organizer':
-        return (
-          <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
-            <h3 className="text-lg font-semibold text-blue-800 mb-2">Organizer Information</h3>
-            <p className="text-blue-700 mb-2">As an organizer, you can create and manage events.</p>
-            <ul className="list-disc list-inside text-blue-600 ml-2">
-              <li>Create new events</li>
-              <li>Manage your existing events</li>
-              <li>View participant registrations</li>
-              <li>Send announcements to participants</li>
-            </ul>
-          </div>
-        );
-      case 'participant':
-        return (
-          <div className="mt-6 p-4 bg-green-50 rounded-lg border border-green-200">
-            <h3 className="text-lg font-semibold text-green-800 mb-2">Participant Information</h3>
-            <p className="text-green-700 mb-2">As a participant, you can register for and attend events.</p>
-            <ul className="list-disc list-inside text-green-600 ml-2">
-              <li>Browse and register for events</li>
-              <li>View your registered events</li>
-              <li>Receive event updates</li>
-              <li>Participate in event activities</li>
-            </ul>
-          </div>
-        );
-      default:
-        return null;
-    }
+    const roleInfo = {
+      admin: {
+        title: 'Admin Information',
+        description: 'As an admin, you have full access to manage the platform.',
+        features: [
+          'Manage all users and their roles',
+          'Approve or reject events',
+          'Access platform analytics',
+          'Configure system settings'
+        ],
+        colors: 'bg-purple-50 border-purple-200 text-purple-800'
+      },
+      organizer: {
+        title: 'Organizer Information',
+        description: 'As an organizer, you can create and manage events.',
+        features: [
+          'Create new events',
+          'Manage your existing events',
+          'View participant registrations',
+          'Send announcements to participants'
+        ],
+        colors: 'bg-blue-50 border-blue-200 text-blue-800'
+      },
+      participant: {
+        title: 'Participant Information',
+        description: 'As a participant, you can register for and attend events.',
+        features: [
+          'Browse and register for events',
+          'View your registered events',
+          'Receive event updates',
+          'Participate in event activities'
+        ],
+        colors: 'bg-green-50 border-green-200 text-green-800'
+      }
+    };
+
+    const currentRoleInfo = roleInfo[profileData.role];
+
+    if (!currentRoleInfo) return null;
+
+    return (
+      <div className={`mt-8 p-6 rounded-2xl border ${currentRoleInfo.colors}`}>
+        <h3 className="text-xl font-bold mb-2">{currentRoleInfo.title}</h3>
+        <p className="mb-4">{currentRoleInfo.description}</p>
+        <ul className="list-disc list-inside space-y-2">
+          {currentRoleInfo.features.map((feature, index) => (
+            <li key={index}>{feature}</li>
+          ))}
+        </ul>
+      </div>
+    );
   };
 
+  if (loading) {
+    return <PageLoader text="Loading profile..." />;
+  }
+
   return (
-    <div className="pb-12">
-      <div className="bg-white rounded-xl shadow-md overflow-hidden mb-8">
-        <div className="bg-gradient-to-r from-blue-600 to-indigo-800 px-6 py-4">
-          <h1 className="text-3xl font-bold text-white">My Profile</h1>
-        </div>
-        <div className="p-6">
-          {/* Loading indicator */}
-          {loading ? (
-            <div className="flex justify-center items-center py-8">
-              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+    <div className="min-h-screen bg-gray-50">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
+          <div className="p-8">
+            <div className="mb-8">
+              <h1 className="text-3xl font-bold text-gray-900">My Profile</h1>
+              <p className="text-gray-600">View and edit your personal information</p>
             </div>
-          ) : error ? (
-            <div className="bg-red-100 border-l-4 border-red-400 p-4 my-6">
-              <div className="flex">
-                <div className="flex-shrink-0">
-                  <svg className="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-                  </svg>
-                </div>
-                <div className="ml-3">
-                  <p className="text-sm text-red-700">{error}</p>
-                </div>
+
+            {error && (
+              <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg relative mb-6" role="alert">
+                <strong className="font-bold">Error: </strong>
+                <span className="block sm:inline">{error}</span>
               </div>
-            </div>
-          ) : profileData ? (
-            <div>
-              {/* Success message */}
-              {updateSuccess && (
-                <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">
-                  Profile updated successfully!
-                </div>
-              )}
-              
-              {/* Profile information */}
-              <div className="flex flex-col md:flex-row">
-                <div className="md:w-1/3 mb-6 md:mb-0">
-                  <div className="flex flex-col items-center">
-                    {user.photo ? (
-                      <img 
-                        src={user.photo} 
-                        alt="Profile" 
-                        className="w-32 h-32 rounded-full object-cover mb-4"
-                      />
-                    ) : (
-                      <div className="w-32 h-32 bg-gray-300 rounded-full flex items-center justify-center mb-4">
-                        <span className="text-4xl font-bold text-gray-600">
-                          {profileData.firstName.charAt(0)}{profileData.lastName.charAt(0)}
-                        </span>
-                      </div>
-                    )}
-                    <h2 className="text-xl font-semibold text-gray-800">
-                      {profileData.firstName} {profileData.lastName}
-                    </h2>
-                    <span className={`mt-2 py-1 px-3 rounded-full text-xs ${profileData.role === 'admin' ? 'bg-purple-200 text-purple-800' : profileData.role === 'organizer' ? 'bg-blue-200 text-blue-800' : 'bg-green-200 text-green-800'}`}>
-                      {profileData.role.charAt(0).toUpperCase() + profileData.role.slice(1)}
+            )}
+
+            {updateSuccess && (
+              <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg relative mb-6" role="alert">
+                Profile updated successfully!
+              </div>
+            )}
+
+            {profileData && (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                {/* Left column for photo and basic info */}
+                <div className="md:col-span-1 flex flex-col items-center">
+                  <div className="w-32 h-32 bg-gray-200 rounded-full flex items-center justify-center mb-4">
+                    <span className="text-5xl font-bold text-gray-500">
+                      {profileData.firstName.charAt(0)}{profileData.lastName.charAt(0)}
                     </span>
                   </div>
+                  <h2 className="text-2xl font-bold text-gray-800 text-center">
+                    {profileData.firstName} {profileData.lastName}
+                  </h2>
+                  <span className={`mt-2 py-1 px-4 rounded-full text-sm font-semibold capitalize ${
+                    profileData.role === 'admin' ? 'bg-purple-100 text-purple-800' :
+                    profileData.role === 'organizer' ? 'bg-blue-100 text-blue-800' :
+                    'bg-green-100 text-green-800'
+                  }`}>
+                    {profileData.role}
+                  </span>
                 </div>
-                
-                <div className="md:w-2/3">
+
+                {/* Right column for details and editing */}
+                <div className="md:col-span-2">
                   {isEditing ? (
-                    <form onSubmit={handleSubmit} className="space-y-4">
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <form onSubmit={handleSubmit} className="space-y-6">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                         <div>
                           <label htmlFor="firstName" className="block text-sm font-medium text-gray-700 mb-1">First Name</label>
                           <input
@@ -206,7 +193,7 @@ const ProfilePage = () => {
                             name="firstName"
                             value={formData.firstName}
                             onChange={handleInputChange}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             required
                           />
                         </div>
@@ -218,7 +205,7 @@ const ProfilePage = () => {
                             name="lastName"
                             value={formData.lastName}
                             onChange={handleInputChange}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             required
                           />
                         </div>
@@ -230,12 +217,11 @@ const ProfilePage = () => {
                           id="email"
                           name="email"
                           value={formData.email}
-                          onChange={handleInputChange}
-                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed"
                           required
                           disabled
                         />
-                        <p className="text-xs text-gray-500 mt-1">Email cannot be changed</p>
+                         <p className="text-xs text-gray-500 mt-1">Email cannot be changed.</p>
                       </div>
                       <div>
                         <label htmlFor="college" className="block text-sm font-medium text-gray-700 mb-1">College</label>
@@ -245,50 +231,50 @@ const ProfilePage = () => {
                           name="college"
                           value={formData.college}
                           onChange={handleInputChange}
-                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                           required
                         />
                       </div>
                       <div className="flex space-x-4">
                         <button
                           type="submit"
-                          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                          className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-200 font-semibold shadow-sm"
                         >
                           Save Changes
                         </button>
                         <button
                           type="button"
                           onClick={() => setIsEditing(false)}
-                          className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+                          className="px-6 py-3 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition duration-200 font-semibold"
                         >
                           Cancel
                         </button>
                       </div>
                     </form>
                   ) : (
-                    <div className="space-y-4">
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-6">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                         <div>
                           <h3 className="text-sm font-medium text-gray-500">First Name</h3>
-                          <p className="mt-1 text-lg text-gray-800">{profileData.firstName}</p>
+                          <p className="mt-1 text-lg text-gray-900">{profileData.firstName}</p>
                         </div>
                         <div>
                           <h3 className="text-sm font-medium text-gray-500">Last Name</h3>
-                          <p className="mt-1 text-lg text-gray-800">{profileData.lastName}</p>
+                          <p className="mt-1 text-lg text-gray-900">{profileData.lastName}</p>
                         </div>
                       </div>
                       <div>
                         <h3 className="text-sm font-medium text-gray-500">Email</h3>
-                        <p className="mt-1 text-lg text-gray-800">{profileData.email}</p>
+                        <p className="mt-1 text-lg text-gray-900">{profileData.email}</p>
                       </div>
                       <div>
                         <h3 className="text-sm font-medium text-gray-500">College</h3>
-                        <p className="mt-1 text-lg text-gray-800">{profileData.college}</p>
+                        <p className="mt-1 text-lg text-gray-900">{profileData.college}</p>
                       </div>
                       <div>
                         <button
                           onClick={() => setIsEditing(true)}
-                          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                          className="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-200 font-semibold shadow-sm"
                         >
                           Edit Profile
                         </button>
@@ -297,11 +283,10 @@ const ProfilePage = () => {
                   )}
                 </div>
               </div>
-              
-              {/* Role-specific information */}
-              {renderRoleSpecificInfo()}
-            </div>
-          ) : null}
+            )}
+
+            {renderRoleSpecificInfo()}
+          </div>
         </div>
       </div>
     </div>

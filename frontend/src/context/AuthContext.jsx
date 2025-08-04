@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect } from 'react';
+import { createContext, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { authService } from '../services';
 import { setUser as setReduxUser, setLoading as setReduxLoading, setError as setReduxError, logout as reduxLogout } from '../redux/slices/authSlice';
@@ -89,15 +89,6 @@ export const AuthProvider = ({ children }) => {
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
-};
-
-// Custom hook to use the auth context
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-  return context;
 };
 
 export default AuthContext;

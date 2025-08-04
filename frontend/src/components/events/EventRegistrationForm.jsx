@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { eventService } from '../../services';
-import { useAuth } from '../../context/AuthContext';
+import { useAuth } from '../../context/useAuth';
 
 const EventRegistrationForm = ({ event, onClose, onSuccess }) => {
   const { user } = useAuth();
